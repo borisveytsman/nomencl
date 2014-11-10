@@ -41,7 +41,7 @@
 %<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2001/09/30 v3.1b Nomenclature package (BS)]
+          [2001/10/02 v3.1c Nomenclature package (BS)]
 %
 % \iffalse
 %</package|driver>
@@ -87,6 +87,7 @@
 %   documentation} 
 % \changes{v3.1 (2000/09/15)}{2000/09/15}{WWW address changed (again)}
 % \changes{v3.1b (2001/09/30)}{2001/09/30}{WWW address changed (again)}
+% \changes{v3.1c (2001/10/02)}{2001/10/02}{Minor documentation changes}
 %
 % \GetFileInfo{nomencl.dtx}
 %
@@ -309,10 +310,10 @@
 % following six macros can be used inside a |\nomenclature| macro:
 % |\refeq|, |\norefeq|, |\refpage|, |\norefpage|, |\refeqpage|, |\norefeqpage|.
 % The first four work similar to the package options, only local to the 
-% entry; the last two are shortcuts, but saying |\refeqpage| is equivalent 
+% entry; the last two are shortcuts, so saying |\refeqpage| is equivalent 
 % to |\refeq\refpage|. 
 %
-% If we change the relevant parts of the last example as shown in
+% If we changed the relevant parts of the last example as shown in
 % Figure~\ref{fig:reference} then the nomenclature should look like 
 % Figure~\ref{fig:reference.out}.
 %
@@ -386,18 +387,17 @@
 %   same except for the capitalization, then an upper case letter 
 %   precedes the lower case letter (|Tea|\textless|tea|).
 %   If a letter is compared with a non-letter (digit, 
-%   symbol), ASCII code is used (|1|\textless |A|, 
-%   |A|\textless |~|).\footnote{An exception seems to be that the non-letters 
-%   between upper and lower case letters (code 91--96) are put just before the 
-%   capital letters (between code 64 and 65) while the non-letters after the 
-%   lower case letters (code 123--127) are left there. Can someone please 
-%   enlighten me why?} If two non-letters are compared (which can not happen 
-%   at the first position of a string), ASCII code is used 
-%   (|+|\textless |1|\textless |:|\textless |\|). Additionally there is the
-%   issue of word ordering (treat spaces as letter with ASCII code smaller 
-%   than every printable symbol) and letter ordering (ignore spaces). 
-%   \MakeIndex\ uses word ordering by default, but you can change it with some
-%   command line option (|-l| on my UNIX).
+%   symbol), ASCII code is used (|1|\textless |A|\textless |~|).\footnote{An
+%   exception seems to be that the non-letters between upper and lower case
+%   letters (code 91--96) are put just before the capital letters (between
+%   code 64 and 65) while the non-letters after the lower case letters (code
+%   123--127) are left there. Can someone please enlighten me why?} If two
+%   non-letters are compared (which can not happen at the first position of a
+%   string), ASCII code is used (|+|\textless |1|\textless |:|\textless
+%   |\|). Additionally there is the issue of word ordering (treat spaces as
+%   letters with ASCII code smaller than every printable symbol) and letter
+%   ordering (ignore spaces). \MakeIndex\ uses word ordering by default, but
+%   you can change it with some command line option (|-l| on my UNIX). 
 % \item[Numbers] The natural ordering is used 
 %   (|8|\textless |34|\textless |111|).
 % \item[Symbols] ASCII code is used 
@@ -431,7 +431,7 @@
 % \section{Customization}
 % \label{sec:custom}
 %
-% Besides the things you can customize by using the package options there are
+% Besides the things you can customize by using the package options, there are
 % a few more commands that you might want to redefine. If you make the same
 % changes in every file, it's probably easier to put all those in a file
 % |nomencl.cfg| which is automatically read by the \package{nomencl} package
@@ -565,12 +565,12 @@
 % you have.
 %
 % For most examples, sample configuration files will be generated if you run
-% \LaTeX\ on the |ins| file. There will for example be a file |sample01.cfg|
-% for the subgroups example in Section~\ref{sec:tips:subgroups}. Rename it
-% to |nomencl.cfg|, then it will automatically be used by your document. There
-% is no sample file for the longtable example in
-% Section~\ref{sec:tips:longtable}. I am just too lazy right now, maybe I will
-% add it later\dots
+% \LaTeX\ on the file |nomencl.ins|. There will for example be a file
+% |sample01.cfg| for the subgroups example in
+% Section~\ref{sec:tips:subgroups}. Rename it to |nomencl.cfg|, then it will
+% automatically be used by your document. There is no sample file for the
+% longtable example in Section~\ref{sec:tips:longtable}. I am just too lazy
+% right now, maybe I will add it later\dots 
 %
 %
 % \subsection{Subgroups}
@@ -716,8 +716,8 @@
 %
 % \changes{v3.1 (2000/09/15)}{2000/09/16}{Kopka example added}
 % I was told that the glossary in the \LaTeX\ book by Kopka looks roughly like
-% in Figure~\ref{fig:kopka}. In order to get a glossary like, there are quite
-% some configurations to do. 
+% in Figure~\ref{fig:kopka}. In order to get a glossary like this, there are
+% quite some configurations to do.  
 %
 % \begin{example}
 % \textbf{Symbol}\dotfill\nopagebreak page number \\
@@ -790,7 +790,7 @@
 % version 1.2 of the license, or (at your option) any later version.
 %
 % The most recent release of the \package{nomencl} package can always
-% be found at \url{http://members.nbci.com/schandl/nomencl/}. 
+% be found at \url{http://schandl.gmxhome.de/nomencl/}. 
 % Usually, the same version is also available at
 % \url{CTAN/macros/latex/contrib/supported/nomencl/}.
 %
@@ -970,7 +970,7 @@
 % \begin{macro}{\nomenclature}
 % \changes{v2.7 (1999/05/14)}{1999/05/11}{Protected}
 % This macro just protects the ``real'' \cs{@nomenclature} macro. I am not
-% sure whether this makes sense, because you shouldn't use \cs{nomenclature}
+% sure whether this makes sense because you shouldn't use \cs{nomenclature}
 % in something like \cs{section} anyway, but it doesn't hurt.
 %    \begin{macrocode}
 \def\nomenclature{\protect\@nomenclature}
