@@ -1,9 +1,9 @@
 % \iffalse
 % File nomencl.dtx
 % Copyright 1996 Boris Veytsman
-% Copyright 1999-2000 Bernd Schandl
+% Copyright 1999-2001 Bernd Schandl
 % email schandl@gmx.net
-% www   http://members.nbci.com/schandl/nomencl
+% www   http://schandl.gmxhome.de/nomencl
 %
 % Documentation and documented source code for the nomencl package.
 %
@@ -41,7 +41,7 @@
 %<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2000/12/03 v3.1a Nomenclature package (BS)]
+          [2001/09/30 v3.1b Nomenclature package (BS)]
 %
 % \iffalse
 %</package|driver>
@@ -86,6 +86,7 @@
 % \changes{v3.1 (2000/09/15)}{2000/09/15}{Do not read cfg file in
 %   documentation} 
 % \changes{v3.1 (2000/09/15)}{2000/09/15}{WWW address changed (again)}
+% \changes{v3.1b (2001/09/30)}{2001/09/30}{WWW address changed (again)}
 %
 % \GetFileInfo{nomencl.dtx}
 %
@@ -288,7 +289,7 @@
 % \item[nocfg] The configuration file is not loaded.
 % \item[\hspace{-\labelsep}]
 %   \textbf{croatian, danish, english, french, german, italian, polish,
-%     russian, spanish, ukrainian}
+%     portuguese, russian, spanish, ukrainian}
 %   The reference texts and the nomenclature title will appear in the
 %   corresponding language. Note that in order to use Russian or Ukrainian, 
 %   you have to have Cyrillic fonts installed and you might need a replacement 
@@ -475,6 +476,17 @@
 % than to remove it if he doesn't want it. In case you always need this
 % just define a macro in |nomencl.cfg| that executes these three lines
 % all at once and can be used instead of |\printglossary|.
+%
+% \changes{v3.1b (2001/09/30)}{2001/03/12}{Explain how to get toc entry}
+% Putting an entry for the nomenclature in the table of contents is as
+% easy as this:
+%\begin{verbatim}
+%   \clearpage
+%   \addcontentsline{toc}{chapter}{\nomname}
+%   \printglossary
+%\end{verbatim}
+% Depending on your document class, you may have to change |chapter| to
+% something else.
 %
 % \DescribeMacro{\nomgroup}
 % Usually, \MakeIndex\ inserts the macro |\indexspace| between every

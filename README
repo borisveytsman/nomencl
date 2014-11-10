@@ -22,6 +22,10 @@ sample configuration files. Put the file nomencl.sty somewhere LaTeX can find
 it and nomencl.ist somewhere MakeIndex can find. Read the documentation of 
 your LaTeX system to find out where this might be. 
 
+If you're new to this, see
+http://www.tex.ac.uk/cgi-bin/texfaq2html?label=instpackages for more
+information on installing packages.
+
 
 DOCUMENTATION
 
@@ -56,7 +60,7 @@ commands:
 COPYING AND MODIFICATION
 
 Copyright 1996 Boris Veytsman
-Copyright 1999-2000 Bernd Schandl
+Copyright 1999-2001 Bernd Schandl
 
 The nomencl package consists of the following files:
 
@@ -78,4 +82,5 @@ HELP
 
 Bernd Schandl
 email schandl@gmx.net
-www   http://members.nbci.com/schandl/nomencl
+www   http://schandl.gmxhome.de/nomencl
+
