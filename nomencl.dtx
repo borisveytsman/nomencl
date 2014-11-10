@@ -15,7 +15,7 @@
 % version 1.2 of the license, or (at your option) any later version.
 %
 % \fi
-% \CheckSum{350}
+% \CheckSum{362}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -41,7 +41,7 @@
 %<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2000/09/15 v3.1 Nomenclature package (BS)]
+          [2000/12/03 v3.1a Nomenclature package (BS)]
 %
 % \iffalse
 %</package|driver>
@@ -762,9 +762,10 @@
 % B\"ohm and Karl Heinz Marbaise who helped testing this package.
 %
 % For helping out with translations I thank Branka Lon\v{c}arevi\'{c}
-% (Croatian), Brian Elmegaard (Danish), Artur Gorka (Polish), Denis B.~Roegel
-% (French), Alejandro Lopez-Valencia (Spanish), Boris Veytsman (Russian and
-% Ukrainian) and Sani Egisto (Italian). 
+% (Croatian), Brian Elmegaard (Danish), Denis B.~Roegel (French), 
+% Sani Egisto (Italian), Artur Gorka (Polish), Pedro Areal (Portuguese), 
+% Alejandro Lopez-Valencia (Spanish) and Boris Veytsman 
+% (Russian and Ukrainian). 
 %
 %
 % \section{Releases and Legal Issues}
@@ -868,6 +869,7 @@
 % \changes{v2.6b (1999/04/10)}{1999/04/06}{Added Polish}
 % \changes{v2.7a (1999/07/07)}{1999/07/07}{Added Italian}
 % \changes{v3.1 (2000/09/15)}{2000/08/30}{Added Croatian}
+% \changes{v3.1a (2000/12/03)}{2000/12/03}{Added Portuguese}
 % \begin{macro}{\eqdeclaration}
 % \begin{macro}{\pagedeclaration}
 % \begin{macro}{\nomname}
@@ -901,6 +903,10 @@
   \def\eqdeclaration#1{, porownaj rownanie\nobreakspace(#1)}%
   \def\pagedeclaration#1{, strona\nobreakspace#1}%
   \def\nomname{Lista symboli}}
+\DeclareOption{portuguese}{%
+  \def\eqdeclaration#1{, veja equa\c{c}\~ao\nobreakspace(#1)}%
+  \def\pagedeclaration#1{, p\'agina\nobreakspace#1}%
+  \def\nomname{Nomenclatura}}
 \DeclareOption{russian}{%
   \def\eqdeclaration#1{, \cyrs\cyrm.\nobreakspace(#1)}%
   \def\pagedeclaration#1{, \cyrs\cyrt\cyrr.\nobreakspace#1}%
