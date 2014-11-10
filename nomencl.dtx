@@ -3,7 +3,7 @@
 % Copyright 1996 Boris Veytsman
 % Copyright 1999-2000 Bernd Schandl
 % email schandl@gmx.net
-% www   http://members.xoom.com/schandl/nomencl
+% www   http://members.nbci.com/schandl/nomencl
 %
 % Documentation and documented source code for the nomencl package.
 %
@@ -12,10 +12,10 @@
 % This file can be redistributed and/or modified under the terms
 % of the LaTeX Project Public License distributed from CTAN
 % archives in the directory macros/latex/base/lppl.txt; either
-% version 1 of the license, or (at your option) any later version.
+% version 1.2 of the license, or (at your option) any later version.
 %
 % \fi
-% \CheckSum{340}
+% \CheckSum{350}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -38,19 +38,19 @@
 %</dtx>
 %<package>\ProvidesPackage{nomencl}%
 %<driver>\ProvidesFile{nomencl.drv}%
-%<*!idxstyle>
+%<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2000/03/05 v3.0 Nomenclature package (BS)]
+          [2000/09/15 v3.1 Nomenclature package (BS)]
 %
 % \iffalse
-%</!idxstyle>
+%</package|driver>
 %<*driver>
 \documentclass[11pt]{ltxdoc}
 \usepackage{url}
 \let\tempa\makeglossary
 \let\tempb\printglossary
-\usepackage{nomencl}
+\usepackage[nocfg]{nomencl}
 \let\makeglossary\tempa
 \let\printglossary\tempb
 
@@ -83,6 +83,9 @@
 %   into \texttt{README}}
 % \changes{v2.8 (1999/09/09)}{1999/09/09}{Email changed}
 % \changes{v3.0 (2000/03/05)}{2000/03/05}{WWW address changed}
+% \changes{v3.1 (2000/09/15)}{2000/09/15}{Do not read cfg file in
+%   documentation} 
+% \changes{v3.1 (2000/09/15)}{2000/09/15}{WWW address changed (again)}
 %
 % \GetFileInfo{nomencl.dtx}
 %
@@ -97,8 +100,7 @@
 % \MakeShortVerb{\|}
 % \setlength{\hfuzz}{8pt}
 % \newcommand{\MakeIndex}{\textsl{MakeIndex}}
-% \newcommand{\xindy}{%
-%   \mbox{\normalfont\textbf{\textsf{x\kern-0.7pt%
+% \newcommand{\xindy}{\mbox{\normalfont\textbf{\textsf{x\kern-0.7pt%
 %         \shortstack{{\scriptsize$\circ$}\\[-2pt]\i}\kern-1pt ndy}}}}
 % \let\package\textsf
 % \let\tab\indent
@@ -123,36 +125,6 @@
 % such a list automatically using information provided by the author 
 % throughout the text.
 % 
-% \section{Package Options}
-% \label{sec:options}
-%
-% The \package{nomencl} package has the following options:
-% \begin{description}
-% \item[refeq] The phrase ``, see equation (\meta{eq})'' is appended to
-%   every entry in the nomenclature where \meta{eq} is the number of the
-%   last equation in front of the corresponding command |\nomenclature|.
-% \item[norefeq] No equation reference is printed. (default)
-% \item[refpage] The phrase ``, page \meta{page}'' is appended to
-%   every entry in the nomenclature where \meta{page} is the number of the
-%   page on which the corresponding command |\nomenclature| appeared.
-% \item[norefpage] No page reference is printed. (default)
-% \item[prefix] Every sort key is preceded by the letter ``a'' (changeable); 
-%   see Section~\ref{sec:sort} to learn why this might make sense. (default)
-% \item[noprefix] No prefix is used.
-% \changes{v3.0 (2000/03/05)}{2000/03/05}{New options 
-%   \texttt{cfg}/\texttt{nocfg}}
-% \item[cfg] A configuration file |nomencl.cfg| is loaded, if it exists. 
-%   (default)
-% \item[nocfg] The configuration file is not loaded.
-% \item[\hspace{-\labelsep}]
-%   \textbf{danish, english, french, german, italian, polish, russian, 
-%     spanish, ukrainian}
-%   The reference texts and the nomenclature title will appear in the
-%   corresponding language. Note that in order to use Russian or Ukrainian,
-%   you have to have Cyrillic fonts installed and you might need a replacement
-%   for \MakeIndex, e.\,g.~\xindy. Please help me out with other
-%   languages. (default: english) 
-% \end{description}
 %
 % \section{Usage}
 % 
@@ -185,13 +157,14 @@
 % The next step is to invoke \MakeIndex. You should instruct 
 % \MakeIndex\ to use \meta{filename}|.glo| as your input file,
 % use |nomencl.ist| as your style 
-% \DeleteShortVerb{\|}\MakeShortVerb{\+}%
+% \DeleteShortVerb{\|}\MakeShortVerb{\?}%
 % file\footnote{%
-%  German users who want to use the shortcut notation +"a+ instead
-%  of \cs{"a} have to redefine the quote character in +nomencl.ist+
-%  to something other than +"+ (and +|+, +@+, +!+), maybe +\&+; see the
-%  comment in the source code section and in the file +nomencl.ist+.},
-% \DeleteShortVerb{\+}\MakeShortVerb{\|}%
+%  German users who want to use the shortcut notation ?"a? instead
+%  of \cs{"a} have to redefine the quote character in ?nomencl.ist?
+%  to something other than ?"? (and ?|?, ?@?, ?!?), maybe ?+? or ?\&?; see the
+%  comment in the source code section and in the file ?nomencl.ist?. 
+%  Furthermore, they should consider using the ?-g? switch of \MakeIndex.},
+% \DeleteShortVerb{\?}\MakeShortVerb{\|}%
 % and write output to the file \meta{filename}|.gls|.
 % How to do this depends on your implementation of \MakeIndex. For 
 % most UNIX implementations you should write something like\\
@@ -203,6 +176,7 @@
 % \LaTeX\ on your master file \meta{filename}|.tex| once more. It will
 % input your |.gls| file and process it accordingly to the current
 % options. That's all!
+%
 %
 % \subsection{The Main Command}
 % \label{sec:Main-Command}
@@ -290,6 +264,39 @@
 % does \emph{not} work. You can have have line breaks in the argument, but
 % also no |%|.
 %
+%
+% \subsection{Package Options}
+% \label{sec:options}
+%
+% The \package{nomencl} package has the following options:
+% \begin{description}
+% \item[refeq] The phrase ``, see equation (\meta{eq})'' is appended to
+%   every entry in the nomenclature where \meta{eq} is the number of the
+%   last equation in front of the corresponding command |\nomenclature|.
+% \item[norefeq] No equation reference is printed. (default)
+% \item[refpage] The phrase ``, page \meta{page}'' is appended to
+%   every entry in the nomenclature where \meta{page} is the number of the
+%   page on which the corresponding command |\nomenclature| appeared.
+% \item[norefpage] No page reference is printed. (default)
+% \item[prefix] Every sort key is preceded by the letter ``a'' (changeable); 
+%   see Section~\ref{sec:sort} to learn why this might make sense. (default)
+% \item[noprefix] No prefix is used.
+% \changes{v3.0 (2000/03/05)}{2000/03/05}{New options 
+%   \texttt{cfg}/\texttt{nocfg}}
+% \item[cfg] A configuration file |nomencl.cfg| is loaded, if it exists. 
+%   (default)
+% \item[nocfg] The configuration file is not loaded.
+% \item[\hspace{-\labelsep}]
+%   \textbf{croatian, danish, english, french, german, italian, polish,
+%     russian, spanish, ukrainian}
+%   The reference texts and the nomenclature title will appear in the
+%   corresponding language. Note that in order to use Russian or Ukrainian, 
+%   you have to have Cyrillic fonts installed and you might need a replacement 
+%   for \MakeIndex, e.\,g.~\xindy. Please help me out with other
+%   languages. (default: english) 
+% \end{description}
+%
+%
 % \subsection{Referencing}
 %
 % \DescribeMacro{\refeq}\DescribeMacro{\refpage}\DescribeMacro{\refeqpage} 
@@ -348,6 +355,7 @@
 % probably the most sensible place to put them. Note that such local request 
 % always supersede the package options.
 %
+%
 % \section{Sort Order of the Entries}
 % \label{sec:sort}
 %
@@ -366,10 +374,11 @@
 % \item[Symbols] Everything else.
 % \end{description}
 % Each group is sorted separately (and differently), then the groups are
-% sorted in the order symbols, numbers, strings. For the groups the following 
-% algorithm\footnote{This is only vaguely described in~\cite{chen:auto:1987}, 
-%   so I had to figure out special cases by myself. Please correct me if I am 
-%   wrong} is used: 
+% sorted in the order symbols, numbers, strings\footnote{With the |-g| switch
+% of \MakeIndex, they are sorted in the order symbols, strings, numbers.}. For
+% the groups the following algorithm\footnote{This is only vaguely described
+% in~\cite{chen:auto:1987}, so I had to figure out special cases by
+% myself. Please correct me if I am wrong} is used:  
 % \begin{description}
 % \item[Strings] If two letters are compared, the usual ordering is used
 %   (|a|\textless|C|\textless|q|), but if two words are the
@@ -417,6 +426,7 @@
 % \package{noprefix} option and use the optional argument to get exactly the 
 % sort order I want. See Section~\ref{sec:tips} for some special effects.
 %
+%
 % \section{Customization}
 % \label{sec:custom}
 %
@@ -426,6 +436,7 @@
 % |nomencl.cfg| which is automatically read by the \package{nomencl} package
 % whenever it exists in the search path (unless you specified the |nocfg|
 % option).
+%
 %
 % \subsection{Formatting the Nomenclature}
 % \label{sec:format}
@@ -505,6 +516,7 @@
 % sortkeys. By default, |\nomprefix| is set to ``a''; redefining it
 % supersedes the package options \package{prefix} and \package{noprefix}.
 %
+%
 % \subsection{Formatting the Entries}
 %
 % \DescribeMacro{\nomlabel}
@@ -531,18 +543,30 @@
 % know and I will add that language to the next release of the 
 % \package{nomencl} package.
 %
+%
 % \section{Tips and Tricks}
 % \label{sec:tips}
 %
+% \changes{v3.1 (2000/09/15)}{2000/09/15}{Sample cfg files for most examples}
 % In this section, I will gather fancy stuff that people did or might
 % want to do with the \package{nomencl} package. Please email any ideas
 % you have.
 %
+% For most examples, sample configuration files will be generated if you run
+% \LaTeX\ on the |ins| file. There will for example be a file |sample01.cfg|
+% for the subgroups example in Section~\ref{sec:tips:subgroups}. Rename it
+% to |nomencl.cfg|, then it will automatically be used by your document. There
+% is no sample file for the longtable example in
+% Section~\ref{sec:tips:longtable}. I am just too lazy right now, maybe I will
+% add it later\dots
+%
+%
 % \subsection{Subgroups}
+% \label{sec:tips:subgroups}
 %
 % If you have distinct groups among the identifiers in your nomenclature
 % (e.\,g.~Greek letters for physical constants, Roman letters for
-% variables) you can use the optional argument of |\nomenclature|
+% variables), you can use the optional argument of |\nomenclature|
 % together with the |\nomgroup| macro to get two groups with separate 
 % headings in the nomenclature.
 %
@@ -551,16 +575,20 @@
 % \tab|\nomenclature[rx ]{$x$}{Variable}|\\
 % where ``g'' and ``r'' indicate Greek and Roman letters, respectively.
 % Then you include the \package{ifthen} package and redefine |\nomgroup| 
-% e.\,g.~like this:
-%\begin{verbatim}
-%    \renewcommand{\nomgroup}[1]{%
-%      \ifthenelse{\equal{#1}{R}}{\item[\textbf{Variables}]}{%
-%        \ifthenelse{\equal{#1}{G}}{\item[\textbf{Constants}]}{}}{}}
-%\end{verbatim}
+% e.\,g.~like this.
+%    \begin{macrocode}
+%<*sample01>
+\RequirePackage{ifthen}
+\renewcommand{\nomgroup}[1]{%
+  \ifthenelse{\equal{#1}{R}}{\item[\textbf{Variables}]}{%
+    \ifthenelse{\equal{#1}{G}}{\item[\textbf{Constants}]}{}}}
+%</sample01>
+%    \end{macrocode}
 % Note that we have to check for capital letters. All your symbols should
 % have some kind of prefix; maybe you can also use the default prefix ``a''.
 % Note that for symbols and numbers you have to check for the strings
 % ``Symbols'' and ``Numbers''.
+%
 %
 % \subsection{Units}
 % \label{sec:tips:units}
@@ -568,10 +596,12 @@
 % Besides the obvious possibility of adding units for symbols in the 
 % description string, you can also use |\nomentryend| to shift the unit
 % to the right margin. Something along the lines of a macro
-%\begin{verbatim}
-%    \newcommand{\nomunit}[1]{%
-%      \renewcommand{\nomentryend}{\hspace*{\fill}#1}}
-%\end{verbatim}
+%    \begin{macrocode}
+%<*sample02>
+\newcommand{\nomunit}[1]{%
+  \renewcommand{\nomentryend}{\hspace*{\fill}#1}}
+%</sample02>
+%    \end{macrocode}
 % should do the job.
 % You can use this macro like this\\
 % \tab|\nomenclature{$l$}{Length\nomunit{m}}|\\
@@ -579,7 +609,9 @@
 % but it is pretty close as long as you only have one-line descriptions.
 % Any suggestions for improvements are welcome.
 %
+%
 % \subsection{Using a Long Table instead of a List}
+% \label{sec:tips:longtable}
 %
 % \changes{v2.6 (1999/04/02)}{1999/04/01}{Longtable example added}
 % The following idea was sent to me by Brian Elmegaard. I have modified it a
@@ -613,7 +645,7 @@
 %\end{verbatim}
 % Finally we add the following two lines at the end of |nomencl.ist|\footnote{%
 %   Don't forget to rename the file and delete my email address if you want to
-%   distributed the file, see the pointer to the LPPL in
+%   distribute the file, see the pointer to the LPPL in
 %   Section~\ref{sec:legal}.}. 
 %\begin{verbatim}
 %    item_0  ""
@@ -624,6 +656,104 @@
 % headers on every page, a disadvantage is that there won't be any line breaks 
 % in the second column.
 %
+%
+% \subsection{I want it expanded!}
+%
+% \changes{v3.1 (2000/09/15)}{2000/09/01}{Expansion example added}
+% The \package{nomencl} package tries hard to write the arguments of the
+% |\nomenclature| macro verbatim to the glossary file. This is usually the
+% right thing to do because some macros do not like to be expanded at the
+% wrong moment or give weird results if they are. On the other hand, there are 
+% occasions where it is good to have the meaning (or expansion) of a macro in
+% the glossary file instead of its name. There are quite some occasions
+% where you will get in trouble with this expansion, for example, if the
+% expansion of a macro contains~|@| (|\mathcal| expands to |\@mathcal|)
+% because |@| is a special character for \MakeIndex\ and thus \MakeIndex\ will
+% either fail or give unexpected results. You can avoid the expansion on a
+% case by case basis by using |\protect| in front of the macro that should
+% not be expanded.
+%
+% In order to get macro expansion, the redefinition of the |\@nomenclature|
+% macro within the |\makeglossary| macro has to be changed.
+%    \begin{macrocode}
+%<*sample04>
+\def\makeglossary{%
+  \newwrite\@glossaryfile
+  \immediate\openout\@glossaryfile=\jobname.glo
+  \def\@nomenclature{%
+    \@ifnextchar[%
+      {\@@@@nomenclature}{\@@@@nomenclature[\nomprefix]}}%
+  \typeout{Writing glossary file \jobname.glo}%
+  \let\makeglossary\@empty}
+%    \end{macrocode}
+% The new macro to be called by |\@nomenclature| just writes its arguments to
+% the glossary file without further ado, so they will be expanded.
+%    \begin{macrocode}
+\def\@@@@nomenclature[#1]#2#3{%
+ \protected@write\@glossaryfile{}%
+  {\string\glossaryentry{#1#2@[{#2}]%
+      \begingroup#3\protect\nomeqref{\theequation}%
+        |nompageref}{\thepage}}}%
+%</sample04>
+%    \end{macrocode}
+% As I said above, use these macros with care and look for warnings and errors
+% issued by \MakeIndex.
+%
+%
+% \subsection{Glossary in ``Kopka Style''}
+%
+% \changes{v3.1 (2000/09/15)}{2000/09/16}{Kopka example added}
+% I was told that the glossary in the \LaTeX\ book by Kopka looks roughly like
+% in Figure~\ref{fig:kopka}. In order to get a glossary like, there are quite
+% some configurations to do. 
+%
+% \begin{example}
+% \textbf{Symbol}\dotfill\nopagebreak page number \\
+% \hspace*{5mm}Explanation.
+% \caption{Glossary entry in ``Kopka Style''}
+% \label{fig:kopka}
+% \end{example}
+%
+% First we have to change the macro |\@@@nomenclature| which takes care of
+% writing the glossary entry to the glossary file. The only difference to the
+% original definition is that we hand over the explanation of a symbol (\#3)
+% and the equation number to |\nompageref| instead of writing it directly
+% after the symbol (\#2). This is necessary because the explanation should
+% appear after (actually below) the page number.
+%    \begin{macrocode}
+%<*sample05>
+\def\@@@nomenclature[#1]#2#3{%
+ \def\@tempa{#2}\def\@tempb{#3}%
+ \protected@write\@glossaryfile{}%
+  {\string\glossaryentry{#1\nom@verb\@tempa @[{\nom@verb\@tempa}]%
+    |nompageref{\begingroup\nom@verb\@tempb\protect\nomeqref{\theequation}}}%
+    {\thepage}}%
+ \endgroup
+ \@esphack}
+%    \end{macrocode}
+% Now we change the definition of |\nompageref| so that it accepts two
+% arguments, the explanation (\#1) and the page number (\#2). The page number
+% is only printed if required, otherwise  |\null| is used to avoid an error
+% because of the following |\linebreak|. Note that it is \emph{not} possible 
+% to turn off the page number locally, because the explanation appears after 
+% the page number. Does anyone have an idea how to fix this?
+%    \begin{macrocode}
+\def\nompageref#1#2{%
+  \if@printpageref\pagedeclaration{#2}\else\null\fi
+  \linebreak#1\nomentryend\endgroup}
+%    \end{macrocode}
+% And a few little things. We want dots and a space before the page number
+% appears at the right margin; the explanation should end with a period; and
+% the symbol should be printed in bold face (this only works for regular text,
+% not for formulas).
+%    \begin{macrocode}
+\def\pagedeclaration#1{\dotfill\nobreakspace#1}
+\def\nomentryend{.}
+\def\nomlabel#1{\textbf{#1}\hfil}
+%</sample05>
+%    \end{macrocode}
+%
+%
 % \section{Acknowledgements}
 %
 % First and foremost I want to thank Boris Veytsman, who had the idea
@@ -631,10 +761,11 @@
 % helpful advice for the new version. I also want to thank Stefan
 % B\"ohm and Karl Heinz Marbaise who helped testing this package.
 %
-% For helping out with translations I thank Brian Elmegaard (Danish), 
-% Artur Gorka (Polish), Denis B.~Roegel (French), 
-% Alejandro Lopez-Valencia (Spanish), Boris Veytsman (Russian and Ukrainian)
-% and Sani Egisto (Italian).
+% For helping out with translations I thank Branka Lon\v{c}arevi\'{c}
+% (Croatian), Brian Elmegaard (Danish), Artur Gorka (Polish), Denis B.~Roegel
+% (French), Alejandro Lopez-Valencia (Spanish), Boris Veytsman (Russian and
+% Ukrainian) and Sani Egisto (Italian). 
+%
 %
 % \section{Releases and Legal Issues}
 % \label{sec:legal}
@@ -643,10 +774,10 @@
 % of the \LaTeX\ Project Public License distributed from CTAN
 % archives in the directory \url{macros/latex/base/lppl.txt}, see 
 % e.\,g.~\cite{ctan}; either
-% version 1 of the license, or (at your option) any later version.
+% version 1.2 of the license, or (at your option) any later version.
 %
 % The most recent release of the \package{nomencl} package can always
-% be found at \url{http://members.xoom.com/schandl/nomencl/}. 
+% be found at \url{http://members.nbci.com/schandl/nomencl/}. 
 % Usually, the same version is also available at
 % \url{CTAN/macros/latex/contrib/supported/nomencl/}.
 %
@@ -682,8 +813,9 @@
 % \bibitem[7]{veyt:pack:1996}
 % Veytsman, Boris (1996).
 % \newblock Package nomencl, Version 2.2.
-% \newblock \url{http://www.plmsc.psu.edu/~boris/nomencl/}.
+% \newblock \url{http://www.plmsc.psu.edu/~boris/nomencl/} (2000/09/15).
 % \end{thebibliography}}
+%
 %
 % \section{Implementation}
 %
@@ -735,11 +867,16 @@
 % \changes{v2.6a (1999/04/06)}{1999/04/02}{Added Russian, Spanish, Ukrainian}
 % \changes{v2.6b (1999/04/10)}{1999/04/06}{Added Polish}
 % \changes{v2.7a (1999/07/07)}{1999/07/07}{Added Italian}
+% \changes{v3.1 (2000/09/15)}{2000/08/30}{Added Croatian}
 % \begin{macro}{\eqdeclaration}
 % \begin{macro}{\pagedeclaration}
 % \begin{macro}{\nomname}
 % If you can help out with translations for some other languages, let me know.
 %    \begin{macrocode}
+\DeclareOption{croatian}{%
+  \def\eqdeclaration#1{, vidi jednad\v{z}bu\nobreakspace(#1)}%
+  \def\pagedeclaration#1{, stranica\nobreakspace#1}%
+  \def\nomname{Popis simbola}}
 \DeclareOption{danish}{%
   \def\eqdeclaration#1{, se ligning\nobreakspace(#1)}%
   \def\pagedeclaration#1{, side\nobreakspace#1}%
@@ -982,6 +1119,7 @@
 %    \begin{macrocode}
 %</package>
 %    \end{macrocode}
+%
 %
 % \subsection{The \MakeIndex\ Style File}
 % \label{sec:ist}
