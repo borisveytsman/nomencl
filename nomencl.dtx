@@ -1,8 +1,8 @@
 % \iffalse
 % File nomencl.dtx
-% Copyright 1996 Boris Veytsman
-% Copyright 1999-2001 Bernd Schandl
-% www   http://sarovar.org/projects/nomencl
+% Copyright 1996-2018 Boris Veytsman, Bernd Shandl, Lee Netherton, CV
+% Radhakrishnan, Brian Elmegaard
+% 
 %
 % Documentation and documented source code for the nomencl package.
 %
@@ -12,6 +12,13 @@
 % of the LaTeX Project Public License distributed from CTAN
 % archives in the directory macros/latex/base/lppl.txt; either
 % version 1.2 of the license, or (at your option) any later version.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Boris Veytsman,
+% <borisv@lk.net>
+% 
+%
 %
 % \fi
 % \CheckSum{0}
@@ -40,14 +47,14 @@
 %<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2005/09/22 v4.2 Nomenclature package (LN)]
+          [2018/06/24 v5.0 Nomenclature package]
 %
 % \iffalse
 %</package|driver>
 %<*driver>
 \documentclass[11pt]{ltxdoc}%
 \RequirePackage{url}%
-\RequirePackage[dvips]{hyperref}%
+\RequirePackage{hyperref}%
 \RequirePackage[nocfg]{nomencl}%
 
 \hypersetup{%
@@ -124,9 +131,10 @@
 %
 % \title{\package{nomencl}\thanks{Package version \fileversion\ of \filedate.}
 %   \\ A Package to Create a Nomenclature}
-% \author{Boris Veytsman\thanks{Up to version v2.2 (1996/11/25)}\\
+% \author{Boris Veytsman\thanks{Up to version v2.2 (1996/11/25) and
+% since version v5.0 (2018/07/01)}\\
 %       Bernd Schandl\thanks{Up to version v3.1c (2001/10/02)}\\
-%       Lee Netherton \& CV Radhakrishnan\thanks{Up to version v4.0 (2005/03/31)}\\\\
+%       Lee Netherton \thanks{Up to version v4.2 (2005/09/22)} \& CV Radhakrishnan\thanks{Up to version v4.0 (2005/03/31)}\\\\
 %    {\small \href{http://sarovar.org/projects/nomencl}{http://sarovar.org/projects/nomencl}}}
 % \date{Printed on \today}
 % \maketitle
@@ -141,19 +149,21 @@
 % throughout the text.
 %
 % \subsection{Important Notes for Users of Previous Versions}
-% The latest update to the \package{nomencl} package has included some major changes
-% to some of the more important commands. In particular, the |\makeglossary| and
-% |\printglossary| commands have now been renamed to |\makenomenclature| and
-% |\printnomenclature| respectively. The reason for this change is to increase the
-% package's compatibility with other MakeIndex using packages. With this increased
-% compatibility, users will be able to have nomenclatures, glossaries and indexes all
-% in one document.\\
+% An update to the \package{nomencl} package has included some major
+% changes to some of the commands. In particular, the |\makeglossary|
+% and |\printglossary| commands have now been renamed to
+% |\makenomenclature| and |\printnomenclature| respectively. The
+% reason for this change is to increase the package's compatibility
+% with other MakeIndex using packages. With this increased
+% compatibility, users will be able to have nomenclatures, glossaries
+% and indexes all in one document.
 %
 % There is a compatibility option that will allow you to still use
-% your |\makeglossary| and |\printglossary| commands (see section \ref{sec:options}),
-% but it is advised that you change your |\|\ldots|glossary| commands to the new
-% |\|\ldots|nomenclature| commands in your \LaTeX\ files. For more information
-% on the compatibility mode see section \ref{sec:compatibility}.\\
+% your |\makeglossary| and |\printglossary| commands (see section
+% \ref{sec:options}), but it is advised that you change your
+% |\|\ldots|glossary| commands to the new |\|\ldots|nomenclature|
+% commands in your \LaTeX\ files. For more information
+% on the compatibility mode see section \ref{sec:compatibility}.
 %
 % \section{Usage}
 %
@@ -828,16 +838,16 @@
 %
 % \section{Acknowledgements}
 %
-% First and foremost I want to thank Boris Veytsman, who had the idea
-% for the package, maintained it until v2.2 and provided some
-% helpful advice for the new version. I also want to thank Stefan
+% Since version 5.0 the package incorporates the code from
+% |nomentbl.dtx| by Brian Elmegaard.  
+%
+% The authors  want to thank Stefan
 % B\"ohm and Karl Heinz Marbaise who helped testing this package.
 %
-% For helping out with translations I thank Branka Lon\v{c}arevi\'{c}
-% (Croatian), Brian Elmegaard (Danish), Denis B.~Roegel (French),
-% Sani Egisto (Italian), Artur Gorka (Polish), Pedro Areal (Portuguese),
-% Alejandro Lopez-Valencia (Spanish) and Boris Veytsman
-% (Russian and Ukrainian).
+% The translations were done by Branka Lon\v{c}arevi\'{c} (Croatian),
+% Brian Elmegaard (Danish), Denis B.~Roegel (French), Sani Egisto
+% (Italian), Artur Gorka (Polish), Pedro Areal (Portuguese), Alejandro
+% Lopez-Valencia (Spanish) and Boris Veytsman (Russian and Ukrainian).
 %
 %
 % \section{Releases and Legal Issues}
@@ -849,10 +859,6 @@
 % e.\,g.~\cite{ctan}; either
 % version 1.2 of the license, or (at your option) any later version.
 %
-% The most recent release of the \package{nomencl} package can always
-% be found at \url{http://sarovar.org/projects/nomencl}.
-% Usually, the same version is also available at
-% \url{CTAN/macros/latex/contrib/supported/nomencl/}.
 %
 % \StopEventually{%
 % \begin{thebibliography}{5}

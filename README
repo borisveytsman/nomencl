@@ -59,14 +59,9 @@ commands:
 
 COPYING AND MODIFICATION
 
-Copyright 1996 Boris Veytsman
-Copyright 1999-2001 Bernd Schandl
+Copyright 1996-2018 Boris Veytsman, Bernd Shandl, Lee Netherton, CV Radhakrishnan 
 
-The nomencl package consists of the following files:
 
-  README       Instructions on installation and documentation.
-  nomencl.ins  The installation driver.
-  nomencl.dtx  The documentation and the documented source code.
 
 This package can be redistributed and/or modified under the terms
 of the LaTeX Project Public License distributed from CTAN
@@ -78,9 +73,4 @@ backup, or in case you want to pass the nomencl package on to someone
 else.
 
 
-HELP
-
-CV Radhakrishnan
-Lee Netherton
-www   http://sarovar.org/projects/nomencl/
 
