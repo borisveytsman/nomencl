@@ -17,3 +17,5 @@
 *.tex
 *.sty
 *.cfg
+*.lof
+*.toc

@@ -1,26 +1,28 @@
 
 PACKAGE=nomencl
 
-SAMPLECFG = sample01.cfg sample02.cfg sample04.cfg sample05.cfg
+SAMPLES = sample01.tex sample02.tex sample03.tex sample04.tex sample05.tex
 
-SAMPLES = ${SAMPLECFG:%.cfg=%.pdf}
+CFG = ${SAMPLES:%.tex=%.cfg}
 
-PDF = $(PACKAGE).pdf ${SAMPLES} 
+SAMPLEPDF = ${SAMPLES:%.tex=%.pdf}
 
-all:  ${PDF} ${SAMPLECFG}
+PDF = $(PACKAGE).pdf ${SAMPLEPDF}
+
+all:  ${PDF} ${SAMPLES} ${CFG}
 
 
 %.sty:  %.ins %.dtx
 	pdflatex $*.ins
 
-example.tex:  nomencl.ins nomencl.sty
+sample%.tex:  nomencl.ins nomencl.sty
 	pdflatex nomencl.ins
 
 sample%.cfg: nomencl.ins nomencl.dtx
 	pdflatex nomencl.ins
 
 
-%.pdf:  %.dtx ${PACKAGE}.sty example.tex
+%.pdf:  %.dtx ${PACKAGE}.sty 
 	pdflatex $<
 	- bibtex $*
 	pdflatex $<
@@ -31,15 +33,15 @@ sample%.cfg: nomencl.ins nomencl.dtx
 	do pdflatex $<; done
 
 
-sample%.pdf:  sample%.cfg example.tex
+sample%.pdf:  sample%.cfg sample%.tex
 	ln -sf $< nomencl.cfg
-	$(RM) example.nls example.nlo
-	pdflatex example.tex
-	makeindex example.nlo -s nomencl.ist -o example.nls
-	pdflatex example.tex
-	pdflatex example.tex
+	$(RM) sample$*.nls sample$*.nlo
+	pdflatex sample$*.tex
+	makeindex sample$*.nlo -s nomencl.ist -o sample$*.nls
+	pdflatex sample$*.tex
+	pdflatex sample$*.tex
 	$(RM) nomencl.cfg
-	mv example.pdf $@
+
 
 
 clean:
@@ -48,10 +50,10 @@ clean:
 	*.ilg *.ind *.out *.lof \
 	*.lot *.bbl *.blg *.gls *.cut *.hd \
 	*.dvi *.ps *.thm *.tgz *.zip *.rpi *.drv *.ist \
-	*.nlo *.nls example.tex nomencl.cfg
+	*.nlo *.nls 
 
 distclean: clean
-	$(RM) $(PDF) ${SAMPLECFG}
+	$(RM) $(PDF) ${SAMPLES} ${CFG}
 
 #
 # Archive for the distribution. Includes typeset documentation

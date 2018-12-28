@@ -107,16 +107,17 @@
 % \let\example=\figure
 % \let\endexample=\endfigure
 %
-% \title{\package{nomencl}\thanks{Package version \fileversion\ of \filedate.}
-%   \\ A Package to Create a Nomenclature}
+% \title{\package{nomencl}:
+%   A Package to Create a Nomenclature}
 % \author{Boris Veytsman\thanks{Up to version v2.2 (1996/11/25) and
-% since version v5.0 (2018/07/01)}\\
-%       Bernd Schandl\thanks{Up to version v3.1c (2001/10/02)}\\
-%       Lee Netherton \thanks{Up to version v4.2 (2005/09/22)} \& CV Radhakrishnan\thanks{Up to version v4.0 (2005/03/31)}\\\\
-%    {\small \href{http://sarovar.org/projects/nomencl}{http://sarovar.org/projects/nomencl}}}
-% \date{Printed on \today}
+% since version v5.0 (2018/07/01)} \and
+%       Bernd Schandl\thanks{Up to version v3.1c (2001/10/02)} \and
+%       Lee Netherton \thanks{Up to version v4.2 (2005/09/22)} \and CV Radhakrishnan\thanks{Up to version v4.0 (2005/03/31)}}
+% \date{Package version \fileversion\ of \filedate}
 % \maketitle
-%
+% \tableofcontents
+% \listoffigures
+% \clearpage
 %
 % \section{Introduction}
 % How often did you try to understand a theorem in a book, but just
@@ -127,6 +128,7 @@
 % throughout the text.
 %
 % \subsection{Important Notes for Users of Previous Versions}
+%
 % An update to the \package{nomencl} package has included some major
 % changes to some of the commands. In particular, the |\makeglossary|
 % and |\printglossary| commands have now been renamed to
@@ -184,9 +186,13 @@
 % \DeleteShortVerb{\?}\MakeShortVerb{\|}%
 % and write output to the file \meta{filename}|.nls|.
 % How to do this depends on your implementation of \MakeIndex. For
-% most UNIX implementations you should write something like\\
-% \tab|makeindex| \meta{filename}|.nlo -s nomencl.ist -o|
-%   \meta{filename}|.nls|
+% most UNIX implementations you should write something like
+% \begin{center}
+% |makeindex| \meta{filename}|.nlo -s nomencl.ist -o|
+%   \meta{filename}|.nls|  
+% \end{center}
+% 
+% 
 %
 % Now you have the file \meta{filename}|.nls| that contains your
 % nomenclature list properly ordered. The last step is to invoke
@@ -200,8 +206,10 @@
 %
 % \DescribeMacro{\nomenclature}
 % The main command of the \package{nomencl} package has the following
-% syntax:\\
-% \tab|\nomenclature[|\meta{prefix}|]{|\meta{symbol}|}{|\meta{description}|}|\\
+% syntax:
+% \begin{center}
+%   |\nomenclature[|\meta{prefix}|]{|\meta{symbol}|}{|\meta{description}|}|
+% \end{center}
 % where \meta{prefix} is used for fine tuning the sort order,
 % \meta{symbol} is the symbol you want to describe and \meta{description}
 % is the actual description. The sortkey will be \meta{prefix}\meta{symbol},
@@ -215,15 +223,33 @@
 % Put a |%| at the end of the preceding line if necessary.
 % Don't forget to enclose math in \meta{symbol} in |$| signs.
 %
-% Let's have a look at a simple example. If your input file looks like the
-% one in Figure~\ref{fig:simple} then your nomenclature\footnote{Note that
-% all the examples are somewhat faked in this document, but they give a good
-% impression of the ``real'' result.} should look like
-% Figure~\ref{fig:simple.out}.
+% Let's have a look at a simple example. If your input file looks like
+% the one in Figure~\ref{fig:simple} then your nomenclature should
+% look like Figure~\ref{fig:simple.out}.
 %
 % \begin{example}
-% \VerbatimInput{example.tex}
-% \caption{Input of a simple example}
+%    \begin{macrocode}
+%<*sample01.tex>
+\documentclass{article}
+\usepackage{nomencl}
+\makenomenclature
+\begin{document}
+\section*{Main equations}
+\begin{equation}
+  a=\frac{N}{A}
+\end{equation}%
+\nomenclature{$a$}{The number of angels per unit area}%
+\nomenclature{$N$}{The number of angels per needle point}%
+\nomenclature{$A$}{The area of the needle point}%
+The equation $\sigma = m a$%
+\nomenclature{$\sigma$}{The total mass of angels per unit area}%
+\nomenclature{$m$}{The mass of one angel}
+follows easily.
+\printnomenclature
+\end{document}
+%</sample01.tex>
+%    \end{macrocode}
+% \caption{Input for the simple example}
 % \label{fig:simple}
 % \end{example}
 % \begin{example}
@@ -240,15 +266,11 @@
 %  \item[$N$]\begingroup The number of angels per needle point\nomeqref {1}
 %                \nompageref{1}
 % \end{thenomenclature}
-% \caption{Output of a simple example}
+% \caption{The typeset output for the simple example}
 % \label{fig:simple.out}
 % \end{example}
 %
-% Note the necessary quoting of newlines. When the |\nomenclature|
-% macros appear directly after the |equation| environment, quote \emph{all}
-% newlines; when they appear in the middle of a sentence, quote \emph{all but
-% the last} newlines.\footnote{I'm not sure how to resolve this more
-%   elegantly, but suggestions are welcome.}
+% Note the necessary quoting of newlines to suppress spurious spaces.  
 %
 % \changes{v2.6b (1999/04/10)}{1999/04/08}{Documentation change concerning line
 %   breaks between arguments}
@@ -308,9 +330,10 @@
 %
 % \subsection{Referencing}
 %
-% \DescribeMacro{\nomrefeq}\DescribeMacro{\nomrefpage}\DescribeMacro{\nomrefeqpage}
-% \DescribeMacro{\nomnorefeq}\DescribeMacro{\nomnorefpage}
-% \DescribeMacro{\nomnorefeqpage}
+% \DescribeMacro{\nomrefeq}\DescribeMacro{\nomrefpage}%
+% \DescribeMacro{\nomrefeqpage}%
+% \DescribeMacro{\nomnorefeq}\DescribeMacro{\nomnorefpage}%
+% \DescribeMacro{\nomnorefeqpage}%
 % As explained in Section~\ref{sec:options}, you can turn referencing to
 % equations and pages on/off globally using the package options. But sometimes
 % you might want to change the referencing behavior for single entries. The
@@ -340,7 +363,7 @@
 % \printnomenclature
 % \end{document}
 %\end{verbatim}
-% \caption{Input with references}
+% \caption{Explicit references}
 % \label{fig:reference}
 % \end{example}
 % \begin{example}
@@ -357,7 +380,7 @@
 %  \item [$N$]\begingroup The number of angels per needle point\nomrefeq\nomeqref {1}
 %                \nompageref{1}
 % \end{thenomenclature}
-% \caption{Output with references}
+% \caption{Typeset output for Figure~\ref{fig:reference}}
 % \label{fig:reference.out}
 % \end{example}
 %
@@ -386,9 +409,7 @@
 % Each group is sorted separately (and differently), then the groups are
 % sorted in the order symbols, numbers, strings\footnote{With the |-g| switch
 % of \MakeIndex, they are sorted in the order symbols, strings, numbers.}. For
-% the groups the following algorithm\footnote{This is only vaguely described
-% in~\cite{chen:auto:1987}, so I had to figure out special cases by
-% myself. Please correct me if I am wrong} is used:
+% the groups the following algorithm is used:
 % \begin{description}
 % \item[Strings] If two letters are compared, the usual ordering is used
 %   (|a|\textless|C|\textless|q|), but if two words are the
@@ -399,7 +420,7 @@
 %   exception seems to be that the non-letters between upper and lower case
 %   letters (code 91--96) are put just before the capital letters (between
 %   code 64 and 65) while the non-letters after the lower case letters (code
-%   123--127) are left there. Can someone please enlighten me why?} If two
+%   123--127) are left there.} If two
 %   non-letters are compared (which can not happen at the first position of a
 %   string), ASCII code is used (|+|\textless |1|\textless |:|\textless
 %   |\|). Additionally there is the issue of word ordering (treat spaces as
@@ -412,8 +433,7 @@
 %   (|+|\textless|1|\textless|:|\textless|A|\textless|\|\textless|a|).
 % \end{description}
 %
-% Why did you have to read all this?\footnote{I hope you did read it
-%   \texttt{;-)}} Let's consider the following eight nomenclature entries
+% Let's consider the following eight nomenclature entries
 % (without the optional argument): |$~Ab$|, |$~aa$|, |$\Ab$|, |$\aa$|, |$Ab$|,
 % |$aa$|, |Ab|, |aa|. Try to understand the following example with the help
 % of the explanation above and an ASCII table.
@@ -450,25 +470,24 @@
 % \subsection{Formatting the Nomenclature}
 % \label{sec:format}
 %
-% \DescribeMacro{\printnomenclature}
-% \DescribeMacro{\nomlabelwidth}
-% Probably the most common change to the nomenclature is a different amount
-% of space for the symbols. By default, the nomenclature is formatted as a
-% list with the label width equal to |\nomlabelwidth| which is initialized
-% to 1\,cm. You can change this dimension in the |cfg| file or you can use
-% the optional argument of |\printnomenclature|. If you want to have a little
-% more space for the labels (and you don't live in a metric world) you can
-% use\\
-% \tab|\printnomenclature[0.5in]|\\
-% instead of the simple\\
-% \tab|\printnomenclature|
+% \DescribeMacro{\printnomenclature}%
+% \DescribeMacro{\nomlabelwidth}%
+% Probably the most common change to the nomenclature is a different
+% amount of space for the symbols. By default, the nomenclature is
+% formatted as a list with the label width equal to |\nomlabelwidth|
+% which is initialized to 1\,cm. You can change this dimension in the
+% |cfg| file or you can use the optional argument of
+% |\printnomenclature|. If you want to have a little more space for
+% the labels (and you don't live in a metric world) you can use
+% |\printnomenclature[0.5in]| instead of the simple
+% |\printnomenclature|.
 %
-% \DescribeEnv{thenomenclature}
+% \DescribeEnv{thenomenclature}%
 % If you don't like the format of the nomenclature at all, you will have
 % to redefine the |thenomenclature| environment. Maybe a look at the
 % documented code of \package{nomencl} will help.
 %
-% \DescribeMacro{\nomname}
+% \DescribeMacro{\nomname}%
 % In case you don't like the name of the nomenclature, just redefine
 % the |\nomname| macro, e.\,g.\\
 % \tab|\renewcommand{\nomname}{List of Symbols}|\\
@@ -562,16 +581,6 @@
 % \label{sec:tips}
 %
 % \changes{v3.1 (2000/09/15)}{2000/09/15}{Sample cfg files for most examples}
-% In this section, I will gather fancy stuff that people did or might
-% want to do with the \package{nomencl} package. Please email any ideas
-% you have.
-%
-% For most examples, sample configuration files will be generated if you run
-% \LaTeX\ on the file |nomencl.ins|. There will for example be a file
-% |sample01.cfg| for the subgroups example in
-% Section~\ref{sec:tips:subgroups}. Rename it to |nomencl.cfg|, then it will
-% automatically be used by your document. 
-%
 %
 % \subsection{Subgroups}
 % \label{sec:tips:subgroups}
@@ -582,19 +591,21 @@
 % together with the |\nomgroup| macro to get two groups with separate
 % headings in the nomenclature.
 %
-% Use something like the following throughout your text\\
-% \tab|\nomenclature[ga ]{$\alpha$}{Constant}|\\
-% \tab|\nomenclature[rx ]{$x$}{Variable}|\\
+% Use something like the following throughout your text
+% \begin{center}
+%   |\nomenclature[ga]{$\alpha$}{Constant}|\\
+%   |\nomenclature[rx]{$x$}{Variable}|
+% \end{center} 
 % where ``g'' and ``r'' indicate Greek and Roman letters, respectively.
 % Then you include the \package{ifthen} package and redefine |\nomgroup|
 % e.\,g.~like this.
 %    \begin{macrocode}
-%<*sample01>
+%<*sample02.cfg>
 \RequirePackage{ifthen}
 \renewcommand{\nomgroup}[1]{%
   \ifthenelse{\equal{#1}{R}}{\item[\textbf{Variables}]}{%
     \ifthenelse{\equal{#1}{G}}{\item[\textbf{Constants}]}{}}}
-%</sample01>
+%</sample02.cfg>
 %    \end{macrocode}
 % Note that we have to check for capital letters. All your symbols should
 % have some kind of prefix; maybe you can also use the default prefix ``a''.
@@ -607,66 +618,22 @@
 %
 % Besides the obvious possibility of adding units for symbols in the
 % description string, you can also use |\nomentryend| to shift the unit
-% to the right margin. Something along the lines of a macro
+% to the right margin. With package \package{siunitx} you can define
 %    \begin{macrocode}
-%<*sample02>
+%<*sample03.cfg>
 \newcommand{\nomunit}[1]{%
-  \renewcommand{\nomentryend}{\hspace*{\fill}#1}}
-%</sample02>
+  \renewcommand{\nomentryend}{\hspace*{\fill}\si{#1}}}
+%</sample03.cfg>
 %    \end{macrocode}
-% should do the job.
-% You can use this macro like this\\
-% \tab|\nomenclature{$l$}{Length\nomunit{m}}|\\
+% and then define nomenclature as
+% \begin{center}
+% |\nomenclature{$l$}{Length\nomunit{\meter}}|  
+% \end{center}
 % Note that the nomenclature will not be a tabular with three columns,
-% but it is pretty close as long as you only have one-line descriptions.
-% Any suggestions for improvements are welcome.
+% but it is pretty close as long as you only have one-line
+% descriptions.  
 %
 %
-% \subsection{Using a Long Table instead of a List}
-% \label{sec:tips:longtable}
-%
-% \changes{v2.6 (1999/04/02)}{1999/04/01}{Longtable example added}
-% The following idea was sent to me by Brian Elmegaard. I have modified it a
-% little bit to make it work with the current version of \package{nomencl}.
-% Only the basic idea is given, so you have to do some extra thinking
-% (and coding) to get it to work the way you want it.
-%
-% After loading the \package{longtable} package in the preamble we first
-% have to modify the macro that writes the entries to the |glo|
-% file (do this is an style file).
-%\begin{verbatim}
-%    \def\@@@nomenclature[#1]#2#3{%
-%     \def\@tempa{#2}\def\@tempb{#3}%
-%     \protected@write\@nomenclaturefile{}%
-%      {\string\nomenclatureentry{#1\nom@verb\@tempa @{\nom@verb\@tempa}&%
-%          \begingroup\nom@verb\@tempb\protect\nomeqref{\theequation}%
-%            |nompageref}{\thepage}}%
-%     \endgroup
-%     \@esphack}
-%\end{verbatim}
-% Then the nomenclature itself must be changed to start a longtable instead
-% of a list. Maybe we could add something for a repeating header on every page.
-%\begin{verbatim}
-%    \def\thenomenclature{%
-%      \@ifundefined{chapter}{\section*}{\chapter*}{\nomname}%
-%      \nompreamble
-%      \begin{longtable}[l]{@{}ll@{}}}
-%    \def\endthenomenclature{%
-%      \end{longtable}%
-%      \nompostamble}
-%\end{verbatim}
-% Finally we add the following two lines at the end of |nomencl.ist|\footnote{%
-%   Don't forget to rename the file and delete my email address if you want to
-%   distribute the file, see the pointer to the LPPL in
-%   Section~\ref{sec:legal}.}.
-%\begin{verbatim}
-%    item_0  ""
-%    delim_t " \\\\\n"
-%\end{verbatim}
-%
-% As I said, this is only the basic idea. An advantage might be the repeating
-% headers on every page, a disadvantage is that there won't be any line breaks
-% in the second column.
 %
 %
 % \subsection{I want it expanded!}
@@ -688,7 +655,7 @@
 % In order to get macro expansion, the redefinition of the |\@nomenclature|
 % macro within the |\makenomenclature| macro has to be changed.
 %    \begin{macrocode}
-%<*sample04>
+%<*sample04.cfg>
 \def\makenomenclature{%
   \newwrite\@nomenclaturefile
   \immediate\openout\@nomenclaturefile=\jobname\@outputfileextension
@@ -706,11 +673,41 @@
   {\string\nomenclatureentry{#1#2@[{#2}]%
       \begingroup#3\protect\nomeqref{\theequation}%
         |nompageref}{\thepage}}}%
-%</sample04>
+%</sample04.cfg>
 %    \end{macrocode}
 % As I said above, use these macros with care and look for warnings and errors
 % issued by \MakeIndex.
 %
+% The following file has completely different result when using
+% expanded and non-expanded versions
+%    \begin{macrocode}
+%<*sample04.tex>
+\documentclass{article}
+\usepackage{nomencl}
+\makenomenclature
+\begin{document}
+\section*{Main equations}
+\begin{equation}
+  a=\frac{N}{A}
+\end{equation}%
+\newcommand{\thenum}{The numer }
+\nomenclature{$a$}{\thenum of angels per unit area}%
+\nomenclature{$N$}{\thenum of angels per needle point}%
+\nomenclature{$A$}{The area of the needle point}%
+The equation $\sigma = m a$%
+\nomenclature{$\sigma$}{The total mass of angels per unit area}%
+\nomenclature{$m$}{The mass of one angel}
+follows easily.
+
+% We renew the command before printing nomenclature.  However, since
+% our nomencl.cfg uses expansion, it does not affect the result.
+% Cf. nocfg option
+\renewcommand{\thenum}{WRONG!!!! }
+\printnomenclature
+\end{document}
+%</sample04.tex>
+%    \end{macrocode}
+% 
 %
 % \subsection{Glossary in ``Kopka Style''}
 %
@@ -733,7 +730,7 @@
 % after the symbol (\#2). This is necessary because the explanation should
 % appear after (actually below) the page number.
 %    \begin{macrocode}
-%<*sample05>
+%<*sample05.cfg>
 \@printpagereftrue
 \def\@@@nomenclature[#1]#2#3{%
  \def\@tempa{#2}\def\@tempb{#3}%
@@ -763,7 +760,7 @@
 \def\pagedeclaration#1{\dotfill\nobreakspace#1}
 \def\nomentryend{.}
 \def\nomlabel#1{\textbf{#1}\hfil}
-%</sample05>
+%</sample05.cfg>
 %    \end{macrocode}
 %
 %
@@ -1273,9 +1270,12 @@ headings_flag  1
 %\subsection{Example code}
 %\label{sec:example}
 %
-% The code for the example
+% The code for the examples.  Example~1 is used in the user manual.
+% We need an empty config file for it.
 %    \begin{macrocode}
-%<*example>
+%<*sample01.cfg>
+%</sample01.cfg>
+%<*sample02.tex>
 \documentclass{article}
 \usepackage{nomencl}
 \makenomenclature
@@ -1284,16 +1284,35 @@ headings_flag  1
 \begin{equation}
   a=\frac{N}{A}
 \end{equation}%
-\nomenclature{$a$}{The number of angels per unit area}%
-\nomenclature{$N$}{The number of angels per needle point}%
-\nomenclature{$A$}{The area of the needle point}%
+\nomenclature[rx]{$a$}{The number of angels per unit area}%
+\nomenclature[rx]{$N$}{The number of angels per needle point}%
+\nomenclature[rx]{$A$}{The area of the needle point}%
 The equation $\sigma = m a$%
-\nomenclature{$\sigma$}{The total mass of angels per unit area}%
-\nomenclature{$m$}{The mass of one angel}
+\nomenclature[ga]{$\sigma$}{The total mass of angels per unit area}%
+\nomenclature[rx]{$m$}{The mass of one angel}
 follows easily.
 \printnomenclature
 \end{document}
-%</example>
+%</sample02.tex>
+%<*sample03.tex>
+\documentclass{article}
+\usepackage{nomencl, siunitx}
+\makenomenclature
+\begin{document}
+\section*{Main equations}
+\begin{equation}
+  a=\frac{N}{A}
+\end{equation}%
+\nomenclature{$a$}{The number of angels per unit area\nomunit{\per\square\meter}}%
+\nomenclature{$N$}{The number of angels per needle point}%
+\nomenclature{$A$}{The area of the needle point\nomunit{\square\meter}}%
+The equation $\sigma = m a$%
+\nomenclature{$\sigma$}{The total mass of angels per unit area\nomunit{\kilogram\per\square\meter}}%
+\nomenclature{$m$}{The mass of one angel\nomunit{\kilogram}}
+follows easily.
+\printnomenclature
+\end{document}
+%</sample03.tex>
 %    \end{macrocode}
 % 
 %
