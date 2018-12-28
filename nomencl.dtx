@@ -109,15 +109,23 @@
 %
 % \title{\package{nomencl}:
 %   A Package to Create a Nomenclature}
-% \author{Boris Veytsman\thanks{Up to version v2.2 (1996/11/25) and
-% since version v5.0 (2018/07/01)} \and
-%       Bernd Schandl\thanks{Up to version v3.1c (2001/10/02)} \and
-%       Lee Netherton \thanks{Up to version v4.2 (2005/09/22)} \and CV Radhakrishnan\thanks{Up to version v4.0 (2005/03/31)}}
+% \author{Boris Veytsman\and
+%       Bernd Schandl\and
+%       Lee Netherton\and CV Radhakrishnan\and
+%       Brian Elmegaard\end{tabular}\\
+%       \begin{center}with contributions by\end{center}\begin{tabular}[t]{c}  
+%       Stefan Pinnow\and
+%       Patrick Egan\and
+%       Rasmus Solmer Eriksen\and
+%       Andrea Kern\and
+%       Christian Faulhammer}
 % \date{Package version \fileversion\ of \filedate}
 % \maketitle
 % \tableofcontents
 % \listoffigures
 % \clearpage
+%
+% 
 %
 % \section{Introduction}
 % How often did you try to understand a theorem in a book, but just
@@ -126,6 +134,22 @@
 % It uses the powerful capabilities of the \MakeIndex\ program to generate
 % such a list automatically using information provided by the author
 % throughout the text.
+%
+%
+%\subsection{History}
+%\label{sec:history}
+%
+% This package was written by Boris Veytsman for his paper in AiCHE in
+% 1996.  It was improved by Bernd Schandl,
+% Lee Netherton, CV Radhakrishnan, and
+% Brian Elmegaard up to 2006.  In 2006 a version of \package{nomencl}
+% for table-like nomenclature lists was released by Brian Elmegaard as
+% \package{nomentbl}. 
+%
+% In 2018 Boris Veytsman took over the package, and merged the
+% \package{nomentbl} fork back.  He also changed some code, trying to
+% keep the compatibility with the older \package{nomencl} and
+% \package{nomentbl}.
 %
 % \subsection{Important Notes for Users of Previous Versions}
 %
@@ -231,7 +255,7 @@
 %    \begin{macrocode}
 %<*sample01.tex>
 \documentclass{article}
-\usepackage{nomencl}
+\usepackage[cfg=sample01.cfg]{nomencl}
 \makenomenclature
 \begin{document}
 \section*{Main equations}
@@ -304,8 +328,10 @@ follows easily.
 % \item[noprefix] No prefix is used.
 % \changes{v3.0 (2000/03/05)}{2000/03/05}{New options
 %   \texttt{cfg}/\texttt{nocfg}}
-% \item[cfg] A configuration file |nomencl.cfg| is loaded, if it exists.
-%   (default)
+% \item[cfg] A configuration file, by default, |nomencl.cfg| is
+% loaded, if it exists (default).  The variant |cfg=FILENAME| uses the
+% configuration |FILENAME| instead of |nomencl.cfg|.  This is used in
+% the examples in the package documentation.  
 % \item[nocfg] The configuration file is not loaded.
 % \item[intoc] Inserts the nomenclature in the Table of Contents.
 % \item[notintoc] No entry for the nomenclature in the Table of Contents. (default)
@@ -662,7 +688,7 @@ follows easily.
   \def\@nomenclature{%
     \@ifnextchar[%
       {\@@@@nomenclature}{\@@@@nomenclature[\nomprefix]}}%
-  \typeout{Writing nomenclature file \jobname\@outputfileextension}%
+  \PackageInfo{nomencl}{Writing nomenclature file \jobname\@outputfileextension}%
   \let\makenomenclature\@empty}
 %    \end{macrocode}
 % The new macro to be called by |\@nomenclature| just writes its arguments to
@@ -866,6 +892,14 @@ follows easily.
 %<*package>
 \NeedsTeXFormat{LaTeX2e}
 %    \end{macrocode}
+%
+% \changes{v5.1}{2018/12/28}{Moved to xkeyval}
+% We need xkeyval package for some options
+%    \begin{macrocode}
+\RequirePackage{xkeyval}
+%    \end{macrocode}
+% 
+%
 % \begin{macro}{\if@printeqref}
 % \begin{macro}{\if@printpageref}
 % We need two switches to decide whether references to equations and pages
@@ -889,21 +923,21 @@ follows easily.
 % \end{macro}
 % And the options to set these switches globally.
 %    \begin{macrocode}
-\DeclareOption{refeq}{\@printeqreftrue}
-\DeclareOption{norefeq}{\@printeqreffalse}
-\DeclareOption{refpage}{\@printpagereftrue}
-\DeclareOption{norefpage}{\@printpagereffalse}
-\DeclareOption{intoc}{\@intoctrue}
-\DeclareOption{notintoc}{\@intocfalse}
-\DeclareOption{compatible}{\@compatibilitymodetrue}
-\DeclareOption{noncompatible}{\@compatibilitymodefalse}
+\DeclareOptionX{refeq}{\@printeqreftrue}
+\DeclareOptionX{norefeq}{\@printeqreffalse}
+\DeclareOptionX{refpage}{\@printpagereftrue}
+\DeclareOptionX{norefpage}{\@printpagereffalse}
+\DeclareOptionX{intoc}{\@intoctrue}
+\DeclareOptionX{notintoc}{\@intocfalse}
+\DeclareOptionX{compatible}{\@compatibilitymodetrue}
+\DeclareOptionX{noncompatible}{\@compatibilitymodefalse}
 %    \end{macrocode}
 % \begin{macro}{\nomprefix}
 % It might make sense to add the prefix ``a'' to every sortkey, see
 % Section~\ref{sec:sort}.
 %    \begin{macrocode}
-\DeclareOption{prefix}{\def\nomprefix{a}}
-\DeclareOption{noprefix}{\def\nomprefix{}}
+\DeclareOptionX{prefix}{\def\nomprefix{a}}
+\DeclareOptionX{noprefix}{\def\nomprefix{}}
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\if@loadcfg}
@@ -911,8 +945,8 @@ follows easily.
 % should look for a configuration file.
 %    \begin{macrocode}
 \newif\if@loadcfg
-\DeclareOption{cfg}{\@loadcfgtrue}
-\DeclareOption{nocfg}{\@loadcfgfalse}
+\DeclareOptionX{cfg}[nomencl.cfg]{\@loadcfgtrue\gdef\@cfgfile{#1}}
+\DeclareOptionX{nocfg}{\@loadcfgfalse}
 %    \end{macrocode}
 % \end{macro}
 % \changes{v2.5a (1999/03/22)}{1999/03/17}{Added Danish}
@@ -930,49 +964,49 @@ follows easily.
 % \begin{macro}{\nomname}
 % If you can help out with translations for some other languages, let me know.
 %    \begin{macrocode}
-\DeclareOption{croatian}{%
+\DeclareOptionX{croatian}{%
   \def\eqdeclaration#1{, vidi jednad\v{z}bu\nobreakspace(#1)}%
   \def\pagedeclaration#1{, stranica\nobreakspace#1}%
   \def\nomname{Popis simbola}}
-\DeclareOption{danish}{%
+\DeclareOptionX{danish}{%
   \def\eqdeclaration#1{, se ligning\nobreakspace(#1)}%
   \def\pagedeclaration#1{, side\nobreakspace#1}%
   \def\nomname{Symbolliste}}
-\DeclareOption{english}{%
+\DeclareOptionX{english}{%
   \def\eqdeclaration#1{, see equation\nobreakspace(#1)}%
   \def\pagedeclaration#1{, page\nobreakspace#1}%
   \def\nomname{Nomenclature}}
-\DeclareOption{french}{%
+\DeclareOptionX{french}{%
   \def\eqdeclaration#1{, voir \'equation\nobreakspace(#1)}%
   \def\pagedeclaration#1{, page\nobreakspace#1}%
   \def\nomname{Liste des symboles}}
-\DeclareOption{german}{%
+\DeclareOptionX{german}{%
   \def\eqdeclaration#1{, siehe Gleichung\nobreakspace(#1)}%
   \def\pagedeclaration#1{, Seite\nobreakspace#1}%
   \def\nomname{Symbolverzeichnis}}
-\DeclareOption{italian}{%
+\DeclareOptionX{italian}{%
 \def\eqdeclaration#1{, vedi equazione\nobreakspace(#1)}%
 \def\pagedeclaration#1{, pagina\nobreakspace#1}%
 \def\nomname{Elenco dei simboli}}
-\DeclareOption{polish}{%
+\DeclareOptionX{polish}{%
   \def\eqdeclaration#1{, porownaj rownanie\nobreakspace(#1)}%
   \def\pagedeclaration#1{, strona\nobreakspace#1}%
   \def\nomname{Lista symboli}}
-\DeclareOption{portuguese}{%
+\DeclareOptionX{portuguese}{%
   \def\eqdeclaration#1{, veja equa\c{c}\~ao\nobreakspace(#1)}%
   \def\pagedeclaration#1{, p\'agina\nobreakspace#1}%
   \def\nomname{Nomenclatura}}
-\DeclareOption{russian}{%
+\DeclareOptionX{russian}{%
   \def\eqdeclaration#1{, \cyrs\cyrm.\nobreakspace(#1)}%
   \def\pagedeclaration#1{, \cyrs\cyrt\cyrr.\nobreakspace#1}%
   \def\nomname{\CYRS\cyrp\cyri\cyrs\cyro\cyrk%
     \ \cyro\cyrb\cyro\cyrz\cyrn\cyra\cyrch\cyre\cyrn\cyri%
     \cyrishrt}}
-\DeclareOption{spanish}{%
+\DeclareOptionX{spanish}{%
   \def\eqdeclaration#1{, v\'ease la ecuaci\'on\nobreakspace(#1)}%
   \def\pagedeclaration#1{, p\'agina\nobreakspace#1}%
   \def\nomname{Nomenclatura}}
-\DeclareOption{ukrainian}{%
+\DeclareOptionX{ukrainian}{%
   \def\eqdeclaration#1{, \cyrd\cyri\cyrv.\nobreakspace(#1)}%
   \def\pagedeclaration#1{, \cyrs\cyrt\cyro\cyrr.\nobreakspace#1}%
   \def\nomname{\CYRP\cyre\cyrr\cyre\cyrl\cyrii\cyrk%
@@ -981,8 +1015,8 @@ follows easily.
 % \end{macro}\end{macro}\end{macro}
 % Finally set the default options and process everything.
 %    \begin{macrocode}
-\ExecuteOptions{noncompatible,notintoc,norefeq,norefpage,prefix,cfg,english}
-\ProcessOptions\relax
+\ExecuteOptionsX{noncompatible,notintoc,norefeq,norefpage,prefix,cfg,english}
+\ProcessOptionsX\relax
 %    \end{macrocode}
 % \begin{macro}{\@outputfileextension}
 % \begin{macro}{\@inputfileextension}
@@ -1013,7 +1047,7 @@ follows easily.
     \@sanitize
     \@ifnextchar[%
       {\@@@nomenclature}{\@@@nomenclature[\nomprefix]}}%
-  \typeout{Writing nomenclature file \jobname\@outputfileextension}%
+  \PackageInfo{nomencl}{Writing nomenclature file \jobname\@outputfileextension}%
   \let\makenomenclature\@empty}
 %    \end{macrocode}
 % \end{macro}
@@ -1210,8 +1244,8 @@ follows easily.
 % Read the config file if it exists and the corresponding option was given.
 %    \begin{macrocode}
 \if@loadcfg
-  \InputIfFileExists{nomencl.cfg}{%
-    \typeout{Using the configuration file nomencl.cfg}}{}
+  \InputIfFileExists{\@cfgfile}{%
+    \PackageInfo{nomencl}{Using the configuration file \@cfgfile}}{}
 \fi
 %    \end{macrocode}
 % The end.
@@ -1274,10 +1308,13 @@ headings_flag  1
 % We need an empty config file for it.
 %    \begin{macrocode}
 %<*sample01.cfg>
+%
+% This file is intentinally empty
+%
 %</sample01.cfg>
 %<*sample02.tex>
 \documentclass{article}
-\usepackage{nomencl}
+\usepackage[cfg=sample02.cfg]{nomencl}
 \makenomenclature
 \begin{document}
 \section*{Main equations}
@@ -1296,7 +1333,8 @@ follows easily.
 %</sample02.tex>
 %<*sample03.tex>
 \documentclass{article}
-\usepackage{nomencl, siunitx}
+\usepackage[cfg=sample03.cfg]{nomencl}
+\usepackage{siunitx}
 \makenomenclature
 \begin{document}
 \section*{Main equations}

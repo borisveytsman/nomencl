@@ -34,13 +34,11 @@ sample%.cfg: nomencl.ins nomencl.dtx
 
 
 sample%.pdf:  sample%.cfg sample%.tex
-	ln -sf $< nomencl.cfg
 	$(RM) sample$*.nls sample$*.nlo
 	pdflatex sample$*.tex
 	makeindex sample$*.nlo -s nomencl.ist -o sample$*.nls
 	pdflatex sample$*.tex
 	pdflatex sample$*.tex
-	$(RM) nomencl.cfg
 
 
 
