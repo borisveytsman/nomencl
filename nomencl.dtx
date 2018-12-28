@@ -20,25 +20,6 @@
 % 
 %
 %
-% \fi
-% \CheckSum{0}
-%% \CharacterTable
-%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
-%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
-%%   Digits        \0\1\2\3\4\5\6\7\8\9
-%%   Exclamation   \!     Double quote  \"     Hash (number) \#
-%%   Dollar        \$     Percent       \%     Ampersand     \&
-%%   Acute accent  \'     Left paren    \(     Right paren   \)
-%%   Asterisk      \*     Plus          \+     Comma         \,
-%%   Minus         \-     Point         \.     Solidus       \/
-%%   Colon         \:     Semicolon     \;     Less than     \<
-%%   Equals        \=     Greater than  \>     Question mark \?
-%%   Commercial at \@     Left bracket  \[     Backslash     \\
-%%   Right bracket \]     Circumflex    \^     Underscore    \_
-%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
-%%   Right brace   \}     Tilde         \~}
-%%
-% \iffalse
 %<*dtx>
           \ProvidesFile{nomencl.dtx}%
 %</dtx>
@@ -47,14 +28,14 @@
 %<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2018/06/24 v5.0 Nomenclature package]
+          [2018/12/27 v5.0 Nomenclature package]
 %
 % \iffalse
 %</package|driver>
 %<*driver>
 \documentclass[11pt]{ltxdoc}%
-\RequirePackage{url}%
-\RequirePackage{hyperref}%
+\RequirePackage{fancyvrb}%
+\RequirePackage{hypdoc}%
 \RequirePackage[nocfg]{nomencl}%
 
 \hypersetup{%
@@ -78,10 +59,8 @@
 %% Comment out the next line if you want the documentation for the source code.
 %%\OnlyDescription
 
-%% Uncomment the next two lines for a change history.
-%% See also the instructions above (in nomencl.drv).
-%% \AtBeginDocument{\RecordChanges}
-%% \AtEndDocument{\addcontentsline{toc}{section}{Change Log}\PrintChanges}
+\AtBeginDocument{\RecordChanges}
+\AtEndDocument{\addcontentsline{toc}{section}{Change Log}\PrintChanges}
 
 %% Uncomment the next two lines for a command index.
 %% See also the instructions above (in nomencl.drv).
@@ -125,9 +104,8 @@
 %         \shortstack{{\scriptsize$\circ$}\\[-2pt]\i}\kern-1pt ndy}}}}
 % \let\package\textsf
 % \let\tab\indent
-% \newenvironment{example}
-%   {\begin{figure}[htbp]\rule[2pt]{\linewidth}{1pt}}
-%   {\rule[2pt]{\linewidth}{1pt}\end{figure}}
+% \let\example=\figure
+% \let\endexample=\endfigure
 %
 % \title{\package{nomencl}\thanks{Package version \fileversion\ of \filedate.}
 %   \\ A Package to Create a Nomenclature}
@@ -244,25 +222,7 @@
 % Figure~\ref{fig:simple.out}.
 %
 % \begin{example}
-%\begin{verbatim}
-% \documentclass{article}
-% \usepackage{nomencl}
-% \makenomenclature
-% \begin{document}
-% \section*{Main equations}
-% \begin{equation}
-%   a=\frac{N}{A}
-% \end{equation}%
-% \nomenclature{$a$}{The number of angels per unit area}%
-% \nomenclature{$N$}{The number of angels per needle point}%
-% \nomenclature{$A$}{The area of the needle point}%
-% The equation $\sigma = m a$%
-% \nomenclature{$\sigma$}{The total mass of angels per unit area}%
-% \nomenclature{$m$}{The mass of one angel}
-% follows easily.
-% \printnomenclature
-% \end{document}
-%\end{verbatim}
+% \VerbatimInput{example.tex}
 % \caption{Input of a simple example}
 % \label{fig:simple}
 % \end{example}
@@ -327,11 +287,13 @@
 % \item[nocfg] The configuration file is not loaded.
 % \item[intoc] Inserts the nomenclature in the Table of Contents.
 % \item[notintoc] No entry for the nomenclature in the Table of Contents. (default)
-% \item[compatible] Run in compatibility mode. Older tex files may need this option
-%   selected to be able to compile. In the latest version of \package{nomencl} the commands |\makeglossary|
-%   and |\printglossary| were replaced with |\makenomenclature| and |\printnomenclature|.
-%   Selecting this option will redefine the old commands, but will loose the compatibility
-%   with other glossary packages.
+% \item[compatible] Run in compatibility mode. Older tex files may
+%   need this option selected to be able to compile. In the latest
+%   version of \package{nomencl} the commands |\makeglossary| and
+%   |\printglossary| were replaced with |\makenomenclature| and
+%   |\printnomenclature|.  Selecting this option will redefine the old
+%   commands, but will lose the compatibility with other glossary
+%   packages.
 % \item[noncompatible] Do not run in compatibility mode. (default)
 % \item[\hspace{-\labelsep}]
 %   \textbf{croatian, danish, english, french, german, italian, polish,
@@ -608,9 +570,7 @@
 % \LaTeX\ on the file |nomencl.ins|. There will for example be a file
 % |sample01.cfg| for the subgroups example in
 % Section~\ref{sec:tips:subgroups}. Rename it to |nomencl.cfg|, then it will
-% automatically be used by your document. There is no sample file for the
-% longtable example in Section~\ref{sec:tips:longtable}. I am just too lazy
-% right now, maybe I will add it later\dots
+% automatically be used by your document. 
 %
 %
 % \subsection{Subgroups}
@@ -774,6 +734,7 @@
 % appear after (actually below) the page number.
 %    \begin{macrocode}
 %<*sample05>
+\@printpagereftrue
 \def\@@@nomenclature[#1]#2#3{%
  \def\@tempa{#2}\def\@tempb{#3}%
  \protected@write\@nomenclaturefile{}%
@@ -791,7 +752,7 @@
 % the page number. Does anyone have an idea how to fix this?
 %    \begin{macrocode}
 \def\nompageref#1#2{%
-  \if@printpageref\pagedeclaration{#2}\else\null\fi
+  \if@printpageref\pagedeclaration{#2}\else\leavevmode\fi
   \linebreak#1\nomentryend\endgroup}
 %    \end{macrocode}
 % And a few little things. We want dots and a space before the page number
@@ -834,6 +795,8 @@
 % It is worth noting that even though the compatibility mode is available,
 % it is highly recommended to update your \LaTeX\ files to use the new
 % nomenclature commands.
+%
+%
 %
 %
 % \section{Acknowledgements}
@@ -1305,5 +1268,33 @@ heading_suffix "}\n"
 headings_flag  1
 %</idxstyle>
 %    \end{macrocode}
+%
+%
+%\subsection{Example code}
+%\label{sec:example}
+%
+% The code for the example
+%    \begin{macrocode}
+%<*example>
+\documentclass{article}
+\usepackage{nomencl}
+\makenomenclature
+\begin{document}
+\section*{Main equations}
+\begin{equation}
+  a=\frac{N}{A}
+\end{equation}%
+\nomenclature{$a$}{The number of angels per unit area}%
+\nomenclature{$N$}{The number of angels per needle point}%
+\nomenclature{$A$}{The area of the needle point}%
+The equation $\sigma = m a$%
+\nomenclature{$\sigma$}{The total mass of angels per unit area}%
+\nomenclature{$m$}{The mass of one angel}
+follows easily.
+\printnomenclature
+\end{document}
+%</example>
+%    \end{macrocode}
+% 
 %
 % \Finale
