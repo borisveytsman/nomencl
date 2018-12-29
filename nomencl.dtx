@@ -93,6 +93,7 @@
 % Amended documentation accordingly.}
 % \changes{v4.1 (2005/04/27)}{2005/04/27}{Improvements to the documentation,
 % including hyperref support}
+% \changes{v5.0}{2018/12/28}{Rewrote documentation}
 %
 % \GetFileInfo{nomencl.dtx}
 %
@@ -200,14 +201,7 @@
 % The next step is to invoke \MakeIndex. You should instruct
 % \MakeIndex\ to use \meta{filename}|.nlo| as your input file,
 % use |nomencl.ist| as your style
-% \DeleteShortVerb{\|}\MakeShortVerb{\?}%
-% file\footnote{%
-%  German users who want to use the shortcut notation ?"a? instead
-%  of \cs{"a} have to redefine the quote character in ?nomencl.ist?
-%  to something other than ?"? (and ?|?, ?@?, ?!?), maybe ?+? or ?\&?; see the
-%  comment in the source code section and in the file ?nomencl.ist?.
-%  Furthermore, they should consider using the ?-g? switch of \MakeIndex.},
-% \DeleteShortVerb{\?}\MakeShortVerb{\|}%
+% file
 % and write output to the file \meta{filename}|.nls|.
 % How to do this depends on your implementation of \MakeIndex. For
 % most UNIX implementations you should write something like
@@ -309,6 +303,8 @@ follows easily.
 % does \emph{not} work. You can have have line breaks in the argument, but
 % also no |%|.
 %
+% Note that |nomentbl| option described in Section~\ref{sec:nomentbl}
+% changes the syntax of this command.
 %
 % \subsection{Package Options}
 % \label{sec:options}
@@ -333,7 +329,7 @@ follows easily.
 % \item[nostdsubgroups] Do not use standard subgroups in nomenclature, see
 % Section~\ref{sec:grouping} (default).
 % \changes{v3.0 (2000/03/05)}{2000/03/05}{New options
-%   \texttt{cfg}/\texttt{nocfg}}
+% \texttt{cfg}/\texttt{nocfg}}
 % \item[cfg] A configuration file, by default, |nomencl.cfg| is
 % loaded, if it exists (default).  The variant |cfg=FILENAME| uses the
 % configuration |FILENAME| instead of |nomencl.cfg|.  This is used in
@@ -349,6 +345,10 @@ follows easily.
 %   commands, but will lose the compatibility with other glossary
 %   packages.
 % \item[noncompatible] Do not run in compatibility mode. (default)
+% \item[nomentbl] Print nomenclature in the |nomentbl| style, see
+% Section~\ref{sec:nomentbl}. 
+% \item[nonomentbl] Do not print nomenclature in the |nomentbl| style, see
+% Section~\ref{sec:nomentbl} (default).
 % \item[\hspace{-\labelsep}]
 %   \textbf{croatian, danish, english, french, german, italian, polish,
 %     portuguese, russian, spanish, ukrainian}
@@ -421,7 +421,7 @@ follows easily.
 % always supersede the package options.
 %
 %
-% \section{Sorting}
+% \subsection{Sorting}
 % \label{sec:sort}
 %
 % The Greek letter $\sigma$ turned out to be first in the nomenclature
@@ -484,7 +484,7 @@ follows easily.
 % |A| has the smaller ASCII code. The two strings follow at the end.
 %
 %
-%\section{Subgroups}
+%\subsection{Subgroups}
 %\label{sec:grouping}
 %
 % It often makes sense to separate index entries into several groups
@@ -555,7 +555,92 @@ or another one
 %   \label{fig:stdsubgroups}
 % \end{example}
 %
-% \section{Customization}
+%
+%\subsection{Tabular nomenclature (\texttt{nomentbl} style)}
+%\label{sec:nomentbl}
+%
+% The option |nomentbl| changes the behavior of nomenclature.
+%
+% \DescribeMacro{\nomenclature}%
+% The command \cs{nomenclature} now has four, rather than two,
+% mandatory arguments:
+% \begin{center}
+%   \cs{nomenclature}\oarg{prefix}\marg{symbol}\marg{description}\marg{units}\marg{note} 
+% \end{center}
+% Here \oarg{prefix}, \marg{symbol}, and \marg{description} have the
+% same meaning as for the usual \cs{nomenclature} command.  The
+% additional arguments are \marg{units}, which is internally enclosed
+% in the \cs{si} command from |siunitx| package, and \cs{note}, which
+% is an arbitrary note added to the description.
+%
+% \DescribeMacro{\setnomtableformat}
+% The list is wrapped in a |longtable| with the default format
+% \begin{center}
+% |lp{0.4\textwidth}sp{0.3\textwidth}@{}l|  
+% \end{center}
+% The command
+% \cs{setnomtableformat}\marg{format} can be used to change it, for
+% example,
+% \begin{verbatim}
+% \setnomtableformat{lllll}
+% \end{verbatim}
+%
+% Note that the table has five columns: symbol, description, units,
+% note, and reference.  If you do not use references, you may suppress
+% the last column using |@{}l| declaration.  The |s| column is used
+% for units in the \package{siunitx} format.
+%
+% Figure~\ref{fig:nomentbl} provides an example of this option.
+%
+% \begin{example}
+%    \begin{macrocode}
+%<*sample03.tex>
+% Example provided by Stefan Pinnow (SP) 
+\documentclass{article}
+\usepackage[nomentbl,stdsubgroups]{nomencl}
+\usepackage{setspace}
+\makenomenclature
+\begin{document}
+\section*{Main equations}
+%
+Here an equation
+    \begin{equation}\label{eq:heatflux}
+        \dot{Q} = k \cdot A \cdot \Delta T
+    \end{equation}%
+    \nomenclature[aQ]{$\dot{Q}$}{heat flux}{W}{}%
+    \nomenclature[ak]{$k$}{overall heat transfer
+      coefficient}{\watt\per(\square\meter\kelvin)}{see
+      eq.~(\ref{eq:ohtc})}% 
+    \nomenclature[aA]{$A$}{area}{\square\meter}{}%
+    \nomenclature[aL]{$L$}{length}{\meter}{SI base quantity}%
+    \nomenclature[aT]{$T$}{temperature}{\kelvin}{SI base quantity}%
+    \nomenclature[aT]{$\Delta T$}{temperature difference}{\kelvin}{SI base quantity}%
+or another one
+    \begin{equation}\label{eq:ohtc}
+        \frac{1}{k} = \left[\frac{1}{\alpha _{\mathrm{i}}\,r_{\mathrm{i}}} +
+        \sum^n_{j=1}\frac{1}{\lambda _j}\,
+        \ln \frac{r_{\mathrm{a},j}}{r_{\mathrm{i},j}} +
+        \frac{1}{\alpha _{\mathrm{a}}\,
+          r_{\mathrm{a}}}\right] \cdot r_{\mathrm{reference}}
+    \end{equation}%
+    \nomenclature[ga]{$\alpha$}{convection heat transfer
+      coefficient}{\watt\per(\square\meter\kelvin)}{}% 
+    \nomenclature[zi]{i}{in}{}{}%
+    \nomenclature[gl]{$\lambda$}{thermal conductivity}{\watt\per\kelvin}{}%
+    \nomenclature[za]{a}{out}{}{}%
+    \nomenclature[zn]{$n$}{number of walls}{}{}%
+    \nomenclature[zj]{$j$}{running parameter}{}{}%
+    
+\onehalfspacing
+\printnomenclature
+\end{document}
+%</sample03.tex>
+%    \end{macrocode}
+%   \caption{Use of \texttt{nomentbl} option}
+%   \label{fig:nomentbl}
+% \end{example}
+% 
+% \subsection{Customization}
 % \label{sec:custom}
 %
 % Besides the things you can customize by using the package options, there are
@@ -563,10 +648,11 @@ or another one
 % changes in every file, it's probably easier to put all those in a file
 % |nomencl.cfg| which is automatically read by the \package{nomencl} package
 % whenever it exists in the search path (unless you specified the |nocfg|
-% option).
+% option).  You can experiment with loading alternative configuration
+% files using |cfg=FILENAME| version of this option.
 %
 %
-% \subsection{Formatting the Nomenclature}
+% \subsubsection{Formatting the Nomenclature}
 % \label{sec:format}
 %
 % \DescribeMacro{\printnomenclature}%
@@ -588,36 +674,26 @@ or another one
 %
 % \DescribeMacro{\nomname}%
 % In case you don't like the name of the nomenclature, just redefine
-% the |\nomname| macro, e.\,g.\\
-% \tab|\renewcommand{\nomname}{List of Symbols}|\\
-% If you are using e.\,g.~the documentclass |book| with page style
-% headings you should also take care of correct headings:
-%\begin{verbatim}
-%   \cleardoublepage% or \clearpage
-%   \markboth{\nomname}{\nomname}% maybe with \MakeUppercase
-%   \printnomenclature
-%\end{verbatim}
-% I thought about putting this in the definition of |\printnomenclature|
-% but decided that it is much easier for the user to add it if he wants
-% than to remove it if he doesn't want it. In case you always need this
-% just define a macro in |nomencl.cfg| that executes these three lines
-% all at once and can be used instead of |\printnomenclature|.
+% the |\nomname| macro, e.\,g.
+% \begin{center}
+% |\renewcommand{\nomname}{List of Symbols}|  
+% \end{center}
+% 
 %
 % \changes{v3.1b (2001/09/30)}{2001/03/12}{Explain how to get toc entry}
 % \changes{v4.0 (2005/03/31)}{2005/03/31}{TOC entries now added with package option}
 % Putting an entry for the nomenclature in the table of contents can
 % be done by adding an \textbf{intoc} to the package options.
 %
-% \DescribeMacro{\nomgroup}
+% \DescribeMacro{\nomgroup}%
 % Usually, \MakeIndex\ inserts the macro |\indexspace| between every
 % character group, i.\,e.~between symbols and numbers, numbers and
 % letters and between every two letter groups. The \package{nomencl}
 % package inserts the macro |\nomgroup{|\meta{arg}|}| \emph{instead},
 % where \meta{arg} is either the string ``Symbols'' or the string
 % ``Numbers'' or the capital letter of the group that is about to
-% start. You can redefine |\nomgroup| to insert some white space\\
-% \tab|\renewcommand{\nomgroup}[1]{\medskip}|\\
-% or to print a fancy divider
+% start. You can redefine |\nomgroup| to insert some white space
+% |\renewcommand{\nomgroup}[1]{\medskip}|, or to print a fancy divider
 %\begin{verbatim}
 %   \renewcommand{\nomgroup}[1]{%
 %     \item[]\hspace*{-\leftmargin}%
@@ -629,59 +705,58 @@ or another one
 % to have an |\item| first and then jump back to the beginning of the
 % line with the |\hspace| command.
 %
-% \DescribeMacro{\nompreamble}\DescribeMacro{\nompostamble}
+% \DescribeMacro{\nompreamble}\DescribeMacro{\nompostamble}%
 % Maybe you want to explain something just between the title of the
 % nomenclature and the start of the list or at the very end of the
 % list. Just redefine the macros |\nompreamble| and |\nompostamble|
 % which do nothing by default. Note that they are executed \emph{outside}
 % of the list environment.
 %
-% \DescribeMacro{\nomitemsep}
+% \DescribeMacro{\nomitemsep}%
 % The skip between two entries in the nomenclature can be adjusted using
 % \cs{nomitemsep}. This should be done in the preamble or the file
 % |nomencl.cfg|. Note that if you want no extra skip between entries
-% you have to use\\
-% \tab|\setlength{\nomitemsep}{-\parsep}|
+% you have to use
+% |\setlength{\nomitemsep}{-\parsep}|
 %
-% \DescribeMacro{\nomprefix}
+% \DescribeMacro{\nomprefix}%
 % If you want, you can redefine the default prefix that is used for the
 % sortkeys. By default, |\nomprefix| is set to ``a''; redefining it
 % supersedes the package options \package{prefix} and \package{noprefix}.
 %
 %
-% \subsection{Formatting the Entries}
+% \subsubsection{Formatting the Entries}
 %
-% \DescribeMacro{\nomlabel}
+% \DescribeMacro{\nomlabel}%
 % By default, the labels are just shifted to the left within their
 % allocated box. If you want to change this, redefine |\nomlabel|
-% which should get one argument, e.\,g.\\
-% \tab|\renewcommand{\nomlabel}[1]{\hfil #1\hfil}|\\
-% to center the symbols.
+% which should get one argument, e.\,g.
+% |\renewcommand{\nomlabel}[1]{\hfil #1\hfil}| to center the symbols.
 %
-% \DescribeMacro{\nomentryend}
+% \DescribeMacro{\nomentryend}%
 % Maybe you would like to have a period at the end of every entry.
-% Just say\\
-% \tab|\renewcommand{\nomentryend}{.}|\\
-% and there it is. Section~\ref{sec:tips:units} explains another nice
-% application of this macro.
+% Just say |\renewcommand{\nomentryend}{.}|, and there it
+% is. Section~\ref{sec:tips:units} explains another nice application
+% of this macro.
 %
-% \DescribeMacro{\eqdeclaration}\DescribeMacro{\pagedeclaration}
-% If you don't like the text that is used for the references to  equations
-% and pages, you can define |\eqdeclaration| and |\pagedeclaration|. Both
-% should accept one argument, namely the equation and page number,
-% respectively. An example is\\
-% \tab|\renewcommand{\eqdeclaration}[1]{, first used in eq.~(#1)}|\\
-% If you are redefining these macros for a particular language, let me
-% know and I will add that language to the next release of the
-% \package{nomencl} package.
+% \DescribeMacro{\eqdeclaration}\DescribeMacro{\pagedeclaration}%
+% If you don't like the text that is used for the references to
+% equations and pages, you can define |\eqdeclaration| and
+% |\pagedeclaration|. Both should accept one argument, namely the
+% equation and page number, respectively. An example is
+% \begin{center}
+% |\renewcommand{\eqdeclaration}[1]{, first used in eq.~(#1)}|.  
+% \end{center}
+% 
+% 
 %
 %
-% \section{Tips and Tricks}
+% \subsection{Tips and Tricks}
 % \label{sec:tips}
 %
 % \changes{v3.1 (2000/09/15)}{2000/09/15}{Sample cfg files for most examples}
 %
-% \subsection{Subgroups}
+% \subsubsection{Advanced subgroups}
 % \label{sec:tips:subgroups}
 %
 % The standard subgroups described in Section~\ref{sec:grouping} is
@@ -700,30 +775,60 @@ or another one
 % \end{verbatim}
 %
 %
-% \subsection{Units}
+% \subsubsection{Units}
 % \label{sec:tips:units}
 %
 % Besides the obvious possibility of adding units for symbols in the
 % description string, you can also use |\nomentryend| to shift the unit
 % to the right margin. With package \package{siunitx} you can define
 %    \begin{macrocode}
-%<*sample03.cfg>
+%<*sample04.cfg>
 \newcommand{\nomunit}[1]{%
   \renewcommand{\nomentryend}{\hspace*{\fill}\si{#1}}}
-%</sample03.cfg>
+%</sample04.cfg>
 %    \end{macrocode}
 % and then define nomenclature as
 % \begin{center}
 % |\nomenclature{$l$}{Length\nomunit{\meter}}|  
 % \end{center}
-% Note that the nomenclature will not be a tabular with three columns,
-% but it is pretty close as long as you only have one-line
-% descriptions.  
+%
+% See Figure~\ref{fig:units} for the example of the input file.
+%
+% Option |nomentbl| allows an alternative way to add units to the
+% nomenclature (Section~\ref{sec:nomentbl}).  
+%
+% \begin{example}
+%    \begin{macrocode}
+%<*sample04.tex>
+\documentclass{article}
+\usepackage[cfg=sample04.cfg]{nomencl}
+\usepackage{siunitx}
+\makenomenclature
+\begin{document}
+\section*{Main equations}
+\begin{equation}
+  a=\frac{N}{A}
+\end{equation}%
+\nomenclature{$a$}{The number of angels per unit
+  area\nomunit{\per\square\meter}}% 
+\nomenclature{$N$}{The number of angels per needle point}% 
+\nomenclature{$A$}{The area of the needle
+  point\nomunit{\square\meter}}% 
+The equation $\sigma = m a$%
+\nomenclature{$\sigma$}{The total mass of angels per unit
+  area\nomunit{\kilogram\per\square\meter}}% 
+\nomenclature{$m$}{The mass of one angel\nomunit{\kilogram}}
+follows easily.
+\printnomenclature
+\end{document}
+%</sample04.tex>      
+%    \end{macrocode} 
+%   \caption{A simple example with units}
+%   \label{fig:units}
+% \end{example}
 %
 %
-%
-%
-% \subsection{I want it expanded!}
+% \subsubsection{Expansion}
 %
 % \changes{v3.1 (2000/09/15)}{2000/09/01}{Expansion example added}
 % The \package{nomencl} package tries hard to write the arguments of the
@@ -742,7 +847,7 @@ or another one
 % In order to get macro expansion, the redefinition of the |\@nomenclature|
 % macro within the |\makenomenclature| macro has to be changed.
 %    \begin{macrocode}
-%<*sample04.cfg>
+%<*sample05.cfg>
 \def\makenomenclature{%
   \newwrite\@nomenclaturefile
   \immediate\openout\@nomenclaturefile=\jobname\@outputfileextension
@@ -760,26 +865,24 @@ or another one
   {\string\nomenclatureentry{#1#2@[{#2}]%
       \begingroup#3\protect\nomeqref{\theequation}%
         |nompageref}{\thepage}}}%
-%</sample04.cfg>
+%</sample05.cfg>
 %    \end{macrocode}
-% As I said above, use these macros with care and look for warnings and errors
-% issued by \MakeIndex.
 %
 % The following file has completely different result when using
 % expanded and non-expanded versions
 %    \begin{macrocode}
-%<*sample04.tex>
+%<*sample05.tex>
 \documentclass{article}
-\usepackage{nomencl}
+\usepackage[cfg=sample05.cfg]{nomencl}
 \makenomenclature
 \begin{document}
 \section*{Main equations}
 \begin{equation}
   a=\frac{N}{A}
 \end{equation}%
-\newcommand{\thenum}{The numer }
-\nomenclature{$a$}{\thenum of angels per unit area}%
-\nomenclature{$N$}{\thenum of angels per needle point}%
+\newcommand{\magritte}{Not the number }
+\nomenclature{$a$}{\magritte of angels per unit area}%
+\nomenclature{$N$}{\magritte of angels per needle point}%
 \nomenclature{$A$}{The area of the needle point}%
 The equation $\sigma = m a$%
 \nomenclature{$\sigma$}{The total mass of angels per unit area}%
@@ -789,14 +892,14 @@ follows easily.
 % We renew the command before printing nomenclature.  However, since
 % our nomencl.cfg uses expansion, it does not affect the result.
 % Cf. nocfg option
-\renewcommand{\thenum}{WRONG!!!! }
+\renewcommand{\magritte}{The number }
 \printnomenclature
 \end{document}
-%</sample04.tex>
+%</sample05.tex>
 %    \end{macrocode}
 % 
 %
-% \subsection{Glossary in ``Kopka Style''}
+% \subsubsection{Glossary in ``Kopka Style''}
 %
 % \changes{v3.1 (2000/09/15)}{2000/09/16}{Kopka example added}
 % I was told that the glossary in the \LaTeX\ book by Kopka looks roughly like
@@ -817,7 +920,7 @@ follows easily.
 % after the symbol (\#2). This is necessary because the explanation should
 % appear after (actually below) the page number.
 %    \begin{macrocode}
-%<*sample05.cfg>
+%<*sample06.cfg>
 \@printpagereftrue
 \def\@@@nomenclature[#1]#2#3{%
  \def\@tempa{#2}\def\@tempb{#3}%
@@ -833,7 +936,7 @@ follows easily.
 % is only printed if required, otherwise  |\null| is used to avoid an error
 % because of the following |\linebreak|. Note that it is \emph{not} possible
 % to turn off the page number locally, because the explanation appears after
-% the page number. Does anyone have an idea how to fix this?
+% the page number. 
 %    \begin{macrocode}
 \def\nompageref#1#2{%
   \if@printpageref\pagedeclaration{#2}\else\leavevmode\fi
@@ -847,11 +950,11 @@ follows easily.
 \def\pagedeclaration#1{\dotfill\nobreakspace#1}
 \def\nomentryend{.}
 \def\nomlabel#1{\textbf{#1}\hfil}
-%</sample05.cfg>
+%</sample06.cfg>
 %    \end{macrocode}
 %
 %
-% \section{Compatibility Mode}
+% \subsection{Compatibility Mode}
 % \label{sec:compatibility}
 %
 % With previous versions of the \package{nomencl}, the commands |\makeglossary|
@@ -883,7 +986,7 @@ follows easily.
 %
 %
 %
-% \section{Acknowledgements}
+% \subsection{Acknowledgements}
 %
 % Since version 5.0 the package incorporates the code from
 % |nomentbl.dtx| by Brian Elmegaard.  
@@ -897,7 +1000,7 @@ follows easily.
 % Lopez-Valencia (Spanish) and Boris Veytsman (Russian and Ukrainian).
 %
 %
-% \section{Releases and Legal Issues}
+% \subsection{Releases and Legal Issues}
 % \label{sec:legal}
 %
 % This package can be redistributed and/or modified under the terms
@@ -1003,7 +1106,20 @@ follows easily.
 \DeclareOptionX{noprefix}{\def\nomprefix{}}
 %    \end{macrocode}
 % \end{macro}
+%
+% \begin{macro}{\if@nomentbl}
+%   \changes{v5.0}{2018/12/28}{New macro}
+%   Whether to use nomentbl format
+%    \begin{macrocode}
+\newif\if@nomentbl
+\DeclareOptionX{nomentbl}{\@nomentbltrue}
+\DeclareOptionX{norefeq}{\@nomentblfalse}
+%    \end{macrocode}
+%   
+% \end{macro}
+%
 % \begin{macro}{\if@loadcfg}
+% \changes{v5.0}{2018/12/28}{Added settable cfg file}
 % Another switch and the corresponding options to decide whether we
 % should look for a configuration file.
 %    \begin{macrocode}
@@ -1157,6 +1273,15 @@ follows easily.
 \ExecuteOptionsX{noncompatible,notintoc,norefeq,norefpage,prefix,cfg,english,nostdsubgroups}
 \ProcessOptionsX\relax
 %    \end{macrocode}
+%
+% In the |nomentbl| mode we need a couple more packages
+%    \begin{macrocode}
+\if@nomentbl
+\RequirePackage{array,longtable, siunitx}
+\fi
+%    \end{macrocode}
+% 
+%
 % \begin{macro}{\@outputfileextension}
 % \begin{macro}{\@inputfileextension}
 % The default file extension for the output and input nomenclature files are
@@ -1197,7 +1322,7 @@ follows easily.
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\nom@verb}
-% \changes{v2.7 (1999/05/14)}{1999/05/11}{Added}
+% \changes{v2.7 (1999/05/14)}{1999/05/11}{Added macro}
 % The macro \cs{nom@verb}, which is copied from~\cite{jone:anew:1995}
 % and~\cite[p.~382]{knut:thet:1984}, makes it possible to use
 % \cs{nomenclature} in another macro.
@@ -1214,8 +1339,11 @@ follows easily.
 \def\nomenclature{\protect\@nomenclature}
 %    \end{macrocode}
 % \end{macro}
+%
+%
 % \begin{macro}{\@nomenclature}
 % \begin{macro}{\@@nomenclature}
+% \changes{v5.0}{2018/12/28}{Nomentbl option}
 % Without an executed \cs{makenomenclature}, \cs{@nomenclature} will only
 % change some catcodes and call the macro \cs{@@nomenclature}
 % to gobble its arguments.
@@ -1225,12 +1353,17 @@ follows easily.
   \begingroup
   \@sanitize
   \@ifnextchar[%
-    {\@@nomenclature}{\@@nomenclature[\nomprefix]}}
-\def\@@nomenclature[#1]#2#3{\endgroup\@esphack}
+  {\@@nomenclature}{\@@nomenclature[\nomprefix]}}
+\if@nomentbl
+  \def\@@nomenclature[#1]#2#3#4#5{\endgroup\@esphack}
+\else
+  \def\@@nomenclature[#1]#2#3{\endgroup\@esphack}
+\fi
 %    \end{macrocode}
 % \end{macro} \end{macro}
 % \begin{macro}{\@@@nomenclature}
 % \changes{v2.7 (1999/05/14)}{1999/05/11}{More robust by using \cs{nom@verb}}
+% \changes{v5.0}{2018/12/28}{Nomentbl option}
 % If \cs{makenomenclature} was already executed, then \cs{@nomenclature}
 % calls the macro \cs{@@@nomenclature} which writes to the nomenclature file.
 % It puts the prefix in front of the entry, adds brackets |[]| around the
@@ -1243,33 +1376,57 @@ follows easily.
 % disappear between two spaces; unfortunately this doesn't work if
 % \cs{nomenclature} is the first thing in a line.
 %    \begin{macrocode}
-\def\@@@nomenclature[#1]#2#3{%
- \def\@tempa{#2}\def\@tempb{#3}%
- \protected@write\@nomenclaturefile{}%
-  {\string\nomenclatureentry{#1\nom@verb\@tempa @[{\nom@verb\@tempa}]%
-      \begingroup\nom@verb\@tempb\protect\nomeqref{\theequation}%
+\if@nomentbl
+  \def\@@@nomenclature[#1]#2#3#4#5{%
+    \def\@tempa{#2}\def\@tempb{#3}%
+    \protected@write\@nomenclaturefile{}%
+    {\string\nomenclatureentry{#1\nom@verb\@tempa @&{\nom@verb\@tempa}&%
+        \begingroup\nom@verb\@tempb\endgroup &\begingroup#4\endgroup&%
+        \begingroup#5\endgroup&\begingroup\protect\nomeqref{\theequation}%
         |nompageref}{\thepage}}%
- \endgroup
- \@esphack}
+    \endgroup
+    \@esphack}
+\else
+  \def\@@@nomenclature[#1]#2#3{%
+    \def\@tempa{#2}\def\@tempb{#3}%
+    \protected@write\@nomenclaturefile{}%
+    {\string\nomenclatureentry{#1\nom@verb\@tempa @[{\nom@verb\@tempa}]%
+        \begingroup\nom@verb\@tempb\protect\nomeqref{\theequation}%
+        |nompageref}{\thepage}}%
+    \endgroup
+    \@esphack}
+\fi
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\nomgroup}
+% \changes{v5.0}{2018/12/28}{Rewrote}
 % The next macro is executed between each character group in the
-% nomenclature. By default it just gobbles its argument, but
-% the user can redefine it to add white space or some fancy divider
-% including the starting character of the new group.
+% nomenclature.  The argument is the first character of the group.
 %    \begin{macrocode}
 \if@stdsubgroups
+  \if@nomentbl
   \def\nomgroup#1{%
     \ifthenelse{\equal{#1}{A}}{%
-      \item[\large{\nomAname}]}{%
-      \ifthenelse{\equal{#1}{G}}{%
-        \item[\large{\nomGname}]}{%
-        \ifthenelse{\equal{#1}{X}}{%
-          \item[\large{\nomXname}]}{%
-          \ifthenelse{\equal{#1}{Z}}{%
-            \item[\large{\nomZname}]}{%
-            {}}}}}}
+      \item&\multicolumn{5}{@{}l}{\textbf{\nomAname}}}{%
+        \ifthenelse{\equal{#1}{G}}{%
+        \item&\multicolumn{5}{@{}l}{\textbf{\nomGname}}}{%
+          \ifthenelse{\equal{#1}{X}}{%
+          \item&\multicolumn{5}{@{}l}{\textbf{\nomXname}}}{%
+            \ifthenelse{\equal{#1}{Z}}{%
+            \item&\multicolumn{5}{@{}l}{\textbf{\nomZname}}}{%
+              {}}}}}}
+  \else
+    \def\nomgroup#1{%
+      \ifthenelse{\equal{#1}{A}}{%
+      \item[\textbf{\nomAname}]}{%
+        \ifthenelse{\equal{#1}{G}}{%
+        \item[\textbf{\nomGname}]}{%
+          \ifthenelse{\equal{#1}{X}}{%
+          \item[\textbf{\nomXname}]}{%
+            \ifthenelse{\equal{#1}{Z}}{%
+            \item[\textbf{\nomZname}]}{%
+              {}}}}}}
+    \fi
 \else
   \def\nomgroup#1{}
 \fi
@@ -1329,13 +1486,31 @@ follows easily.
 \nomitemsep\itemsep
 %    \end{macrocode}
 % \end{macro}
+%
+% \begin{macro}{\setnomtableformat}
+%\changes{v5.0}{2018/12/28}{Added macro}
+% The format of the nomenclature table.  We insert an empty left
+% column due to the way \TeX\ sees \cs{multicolumn} in \cs{nomgroup}
+% command.  
+%    \begin{macrocode}
+\def\setnomtableformat#1{\def\@nomtableformat{l@{}#1}}
+\setnomtableformat{lp{0.45\textwidth}sp{0.3\textwidth}@{}l}
+%    \end{macrocode}
+% 
+% \end{macro}
+%
+%
 % \begin{environment}{thenomenclature}
 % The |thenomenclature| environment formats its title and optionally
 % inserts an item in the TOC, both are dependant on
 % whether the \cs{chapter} command is available or not. After
 % printing the preamble, a list is started with the \cs{labelwidth}
 % being set to the value defined in the optional argument of
-% \cs{printnomenclature}.
+% \cs{printnomenclature}, unless |nomentbl| is chosen.  In the latter
+% case we start a longtable.  Note that each row of the table starts
+% with \cs{item}, so we need to make the first \cs{item} noop, and all
+% the subsequent ones to produce \cs{cr}.  We also add \cs{cr} at the
+% end of the table.
 %    \begin{macrocode}
 \def\thenomenclature{%
   \@ifundefined{chapter}%
@@ -1345,18 +1520,31 @@ follows easily.
   }%
   {
     \chapter*{\nomname}
+    \markboth{\nomname}{\nomname}%
     \if@intoc\addcontentsline{toc}{chapter}{\nomname}\fi%
   }%
 
   \nompreamble
-  \list{}{%
-    \labelwidth\nom@tempdim
-    \leftmargin\labelwidth
-    \advance\leftmargin\labelsep
-    \itemsep\nomitemsep
-    \let\makelabel\nomlabel}}
+  \if@nomentbl
+    \let\itemOrig=\item
+    \def\item{\gdef\item{\\}}%
+    \expandafter\longtable\expandafter{\@nomtableformat}
+  \else
+    \list{}{%
+      \labelwidth\nom@tempdim
+      \leftmargin\labelwidth
+      \advance\leftmargin\labelsep
+      \itemsep\nomitemsep
+      \let\makelabel\nomlabel}%
+  \fi
+}
 \def\endthenomenclature{%
-  \endlist
+  \if@nomentbl
+    \item\endlongtable
+    \global\let\item=\itemOrig
+  \else
+    \endlist
+  \fi
   \nompostamble}
 %    \end{macrocode}
 % \end{environment}
@@ -1393,6 +1581,9 @@ follows easily.
   \nomentryend\endgroup}
 %    \end{macrocode}
 % \end{macro}
+%
+% The commands defined in the \texttt{.ist} file
+%
 % Read the config file if it exists and the corresponding option was given.
 %    \begin{macrocode}
 \if@loadcfg
@@ -1409,23 +1600,21 @@ follows easily.
 % \subsection{The \MakeIndex\ Style File}
 % \label{sec:ist}
 %
-% The ``magic word'' for \MakeIndex\ in the input file is \cs{nomenclatureentry}.
-% German user might need to redefine the quote character if they want to use
-% |"a| instead of |\"a|. Choose whatever character you see fit except \verb+|+,
-% |@| and |!|.
+% The ``magic word'' for \MakeIndex\ in the input file is
+% \cs{nomenclatureentry}. 
 %    \begin{macrocode}
 %<*idxstyle>
 %% ---- for input file ----
 keyword    "\\nomenclatureentry"
-%% Germans might want to change this and delete the two %%
-%% quote '"'
+% We use % as a quote character since " is active in some languages
+quote '%'
 %    \end{macrocode}
 % Define what is printed at the beginning and the end of the file and
 % the skip between groups. Since we already write \cs{nomgroup} between
 % groups, we define |group_skip| to just input an empty line.
 %    \begin{macrocode}
 %% ---- for output file ----
-preamble   "\\begin{thenomenclature} \n"%
+preamble   "\n\\begin{thenomenclature} \n"%
 postamble  "\n\n\\end{thenomenclature}\n" group_skip "\n"
 %    \end{macrocode}
 % Since we can't handle multiple pages for an entry anyway, we also
@@ -1443,43 +1632,16 @@ delim_2    ""
 %% The next lines will produce some warnings when
 %% running Makeindex as they try to cover two different
 %% versions of the program:
-lethead_prefix "\n \\nomgroup{"
-lethead_suffix "}\n"
+lethead_prefix "\\nomgroup{"
+lethead_suffix "}"
 lethead_flag   1
-heading_prefix "\n \\nomgroup{"
-heading_suffix "}\n"
+heading_prefix "\\nomgroup{"
+heading_suffix "}"
 headings_flag  1
+line_max 1000
 %</idxstyle>
 %    \end{macrocode}
 %
 %
-%\subsection{Example code}
-%\label{sec:example}
-%
-% The code for the examples.  Example~1 is used in the user manual.
-% We need an empty config file for it.
-%    \begin{macrocode}
-%<*sample03.tex>
-\documentclass{article}
-\usepackage[cfg=sample03.cfg]{nomencl}
-\usepackage{siunitx}
-\makenomenclature
-\begin{document}
-\section*{Main equations}
-\begin{equation}
-  a=\frac{N}{A}
-\end{equation}%
-\nomenclature{$a$}{The number of angels per unit area\nomunit{\per\square\meter}}%
-\nomenclature{$N$}{The number of angels per needle point}%
-\nomenclature{$A$}{The area of the needle point\nomunit{\square\meter}}%
-The equation $\sigma = m a$%
-\nomenclature{$\sigma$}{The total mass of angels per unit area\nomunit{\kilogram\per\square\meter}}%
-\nomenclature{$m$}{The mass of one angel\nomunit{\kilogram}}
-follows easily.
-\printnomenclature
-\end{document}
-%</sample03.tex>
-%    \end{macrocode}
-% 
 %
 % \Finale

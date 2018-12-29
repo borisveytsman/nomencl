@@ -1,16 +1,16 @@
 
 PACKAGE=nomencl
 
-SAMPLES = sample01.tex sample02.tex sample03.tex sample04.tex sample05.tex
+SAMPLES = sample01.tex sample02.tex sample03.tex sample04.tex sample05.tex 
 
-CFG = sample03.cfg sample04.cfg sample05.cfg
+CFG = sample04.cfg sample05.cfg sample06.cfg
 
 
 SAMPLEPDF = ${SAMPLES:%.tex=%.pdf}
 
 PDF = $(PACKAGE).pdf ${SAMPLEPDF}
 
-all:  ${PDF} ${SAMPLES} ${CFG}
+all:  ${PDF} ${SAMPLES} ${CFG} ${PACKAGE}.sty
 
 
 %.sty:  %.ins %.dtx
@@ -34,7 +34,7 @@ sample%.cfg: nomencl.ins nomencl.dtx
 	do pdflatex $<; done
 
 
-sample%.pdf: sample%.tex ${CFG}
+sample%.pdf: sample%.tex ${CFG} ${PACKAGE}.sty
 	pdflatex sample$*.tex
 	makeindex sample$*.nlo -s nomencl.ist -o sample$*.nls
 	pdflatex sample$*.tex
@@ -48,10 +48,10 @@ clean:
 	*.ilg *.ind *.out *.lof \
 	*.lot *.bbl *.blg *.gls *.cut *.hd \
 	*.dvi *.ps *.thm *.tgz *.zip *.rpi *.drv *.ist \
-	*.nlo *.nls 
+	*.nlo *.nls ${SAMPLES} ${CFG}
 
 distclean: clean
-	$(RM) $(PDF) ${SAMPLES} ${CFG}
+	$(RM) $(PDF) 
 
 #
 # Archive for the distribution. Includes typeset documentation
@@ -62,3 +62,4 @@ archive:  all clean
 zip:  all clean
 	zip -r  $(PACKAGE).zip * -x '*~' -x '*.tgz' -x '*.zip' -x CVS -x 'CVS/*'
 
+.PRECIOUS: ${SAMPLES} ${CFG}
