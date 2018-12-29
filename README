@@ -1,5 +1,4 @@
-This is the README file for the nomencl package. Please read the
-license information at the end of this file.
+			   NOMENCL PACKAGE
 
 
 PURPOSE
@@ -8,59 +7,11 @@ The nomenclature package can be used to generate and format a
 nomenclature using MakeIndex.
 
 
-INSTALLATION
-
-To install the nomencl package you need:
-  nomencl.ins
-  nomencl.dtx
-  docstrip.tex (part of the standard LaTeX2e distribution)
-               (I think you need at least version 2.4)
-
-Run LaTeX on the file nomencl.ins to strip the comments from nomencl.dtx and 
-produce the style file nomencl.sty, the index format file nomencl.ist and some
-sample configuration files. Put the file nomencl.sty somewhere LaTeX can find 
-it and nomencl.ist somewhere MakeIndex can find. Read the documentation of 
-your LaTeX system to find out where this might be. 
-
-If you're new to this, see
-http://www.tex.ac.uk/cgi-bin/texfaq2html?label=instpackages for more
-information on installing packages.
-
-
-DOCUMENTATION
-
-To produce the documentation you also need:
-  ltxdoc.cls (part of the standard LaTeX2e distribution)
-  doc.sty (part of the standard LaTeX2e distribution)
-  url.sty (part of almost all LaTeX2e distributions)
-
-If you want the standard documentation, run LaTeX on nomencl.dtx.
-If you want a more detailed documentation with the code and an index,
-use nomencl.drv and modify it according to the following notes.
-
-To get documentation of the code, put a percent sign in front of the
-\OnlyDescription.
-
-If you additionally want to know about the change history, uncomment the
-indicated lines in nomencl.drv and use the following commands:
-    latex nomencl.drv
-    makeindex -s gglo.ist -o nomencl.gls nomencl.glo
-    latex nomencl.drv
-Then the change history should appear at the end of the documentation.
-Note that this list is only complete if you include the code (see above).
-
-If you want to have an index of all the new and redefined macros and
-environments, uncomment the indicated lines and use the following 
-commands:
-    latex nomencl.drv
-    makeindex -s gind.ist nomencl.idx
-    latex nomencl.drv
-
 
 COPYING AND MODIFICATION
 
-Copyright 1996-2018 Boris Veytsman, Bernd Shandl, Lee Netherton, CV Radhakrishnan 
-
+Copyright 1996-2018 Boris Veytsman, Bernd Shandl, Lee Netherton, CV
+Radhakrishnan, Brian Elmegaard
 
 
 This package can be redistributed and/or modified under the terms
@@ -73,4 +24,10 @@ backup, or in case you want to pass the nomencl package on to someone
 else.
 
 
+VERSION HISTORY
 
+  v5.0 2018/12/29   New maintainer:  Boris Veytsman
+       		    Cleaned code and documentation
+		    Incorporated nomentbl code
+		    New options:  stdsubgroups, nomentbl,
+		    	user selectable configuratuon file
