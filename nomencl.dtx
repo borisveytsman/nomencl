@@ -255,7 +255,7 @@
 %    \begin{macrocode}
 %<*sample01.tex>
 \documentclass{article}
-\usepackage[cfg=sample01.cfg]{nomencl}
+\usepackage[nocfg]{nomencl}
 \makenomenclature
 \begin{document}
 \section*{Main equations}
@@ -324,8 +324,14 @@ follows easily.
 %   page on which the corresponding command |\nomenclature| appeared.
 % \item[norefpage] No page reference is printed. (default)
 % \item[prefix] Every sort key is preceded by the letter ``a'' (changeable);
-%   see Section~\ref{sec:sort} to learn why this might make sense. (default)
+%   see Sections~\ref{sec:sort} and Section~\ref{sec:grouping} to
+%   learn why this might make sense. (default) 
 % \item[noprefix] No prefix is used.
+% \changes{v5.0}{2018/12/28}{New options |stdsubgroups| and |nostdsubgroups|}
+% \item[stdsubgroups] Use standard subgroups in nomenclature, see
+% Section~\ref{sec:grouping}. 
+% \item[nostdsubgroups] Do not use standard subgroups in nomenclature, see
+% Section~\ref{sec:grouping} (default).
 % \changes{v3.0 (2000/03/05)}{2000/03/05}{New options
 %   \texttt{cfg}/\texttt{nocfg}}
 % \item[cfg] A configuration file, by default, |nomencl.cfg| is
@@ -415,7 +421,7 @@ follows easily.
 % always supersede the package options.
 %
 %
-% \section{Sort Order of the Entries}
+% \section{Sorting}
 % \label{sec:sort}
 %
 % The Greek letter $\sigma$ turned out to be first in the nomenclature
@@ -477,10 +483,77 @@ follows easily.
 % (this time correctly). Note that |$\Ab$| is in front of |$\aa$| because
 % |A| has the smaller ASCII code. The two strings follow at the end.
 %
-% Decide for yourself what you prefer. Personally, I like to specify the
-% \package{noprefix} option and use the optional argument to get exactly the
-% sort order I want. See Section~\ref{sec:tips} for some special effects.
 %
+%\section{Subgroups}
+%\label{sec:grouping}
+%
+% It often makes sense to separate index entries into several groups
+% according to their meaning.  The prefix parameter for the
+% \cs{nomenclature} command provides a way to do it.  The algorithm is:
+% \begin{enumerate}
+% \item Start prefixes with different letters for different
+% subgroups. 
+% \item Define \cs{nomgroup} command (see Section~\ref{sec:format}
+% below) to typeset group names.
+% \end{enumerate}
+%
+% One of the popular choices, suggested by Brian Elmegaard in
+% \package{nomentbl} is the following (the corresponding prefixes are
+% in bold):
+% \begin{description}
+% \item[A] Latin letters
+% \item[G] Greek letters
+% \item[X] Superscripts
+% \item[Z] Subscripts
+% \end{description}
+%
+% This choice is implemented in the |stsubgroups| option of the
+% package, see Figure~\ref{fig:stdsubgroups}.  A further customization
+% is discussed in Section~\ref{sec:custom}.  
+%
+% \begin{example}
+%    \begin{macrocode}
+%<*sample02.tex>
+% Example provided by Stefan Pinnow (SP) 
+\documentclass{article}
+\usepackage[stdsubgroups,nocfg]{nomencl}
+\usepackage{setspace}
+    \makenomenclature
+\begin{document}
+\section*{Main equations}
+Here an equation
+    \begin{equation}\label{eq:heatflux}
+        \dot{Q} = k \cdot A \cdot \Delta T
+    \end{equation}%
+    \nomenclature[aQ]{$\dot{Q}$}{heat flux}%
+    \nomenclature[ak]{$k$}{overall heat transfer
+      coefficient}%
+    \nomenclature[aA]{$A$}{area}%
+    \nomenclature[aL]{$L$}{length}%
+    \nomenclature[aT]{$T$}{temperature}%
+    \nomenclature[aT]{$\Delta T$}{temperature difference}%
+or another one
+    \begin{equation}\label{eq:ohtc}
+        \frac{1}{k} = \left[\frac{1}{\alpha _{\mathrm{i}}\,r_{\mathrm{i}}} +
+        \sum^n_{j=1}\frac{1}{\lambda _j}\,
+        \ln \frac{r_{\mathrm{a},j}}{r_{\mathrm{i},j}} +
+        \frac{1}{\alpha _{\mathrm{a}}\,
+          r_{\mathrm{a}}}\right] \cdot r_{\mathrm{reference}}
+    \end{equation}%
+    \nomenclature[ga]{$\alpha$}{convection heat transfer coefficient}%
+    \nomenclature[zi]{i}{in}%
+    \nomenclature[gl]{$\lambda$}{thermal conductivity}%
+    \nomenclature[za]{a}{out}%
+    \nomenclature[zn]{$n$}{number of walls}%
+    \nomenclature[zj]{$j$}{running parameter}%
+\onehalfspacing
+\printnomenclature
+\end{document}
+%</sample02.tex>
+%    \end{macrocode}
+%   \caption{The \texttt{stdsubgroups} option}
+%   \label{fig:stdsubgroups}
+% \end{example}
 %
 % \section{Customization}
 % \label{sec:custom}
@@ -611,32 +684,20 @@ follows easily.
 % \subsection{Subgroups}
 % \label{sec:tips:subgroups}
 %
-% If you have distinct groups among the identifiers in your nomenclature
-% (e.\,g.~Greek letters for physical constants, Roman letters for
-% variables), you can use the optional argument of |\nomenclature|
-% together with the |\nomgroup| macro to get two groups with separate
-% headings in the nomenclature.
-%
-% Use something like the following throughout your text
-% \begin{center}
-%   |\nomenclature[ga]{$\alpha$}{Constant}|\\
-%   |\nomenclature[rx]{$x$}{Variable}|
-% \end{center} 
-% where ``g'' and ``r'' indicate Greek and Roman letters, respectively.
-% Then you include the \package{ifthen} package and redefine |\nomgroup|
-% e.\,g.~like this.
-%    \begin{macrocode}
-%<*sample02.cfg>
-\RequirePackage{ifthen}
-\renewcommand{\nomgroup}[1]{%
-  \ifthenelse{\equal{#1}{R}}{\item[\textbf{Variables}]}{%
-    \ifthenelse{\equal{#1}{G}}{\item[\textbf{Constants}]}{}}}
-%</sample02.cfg>
-%    \end{macrocode}
-% Note that we have to check for capital letters. All your symbols should
-% have some kind of prefix; maybe you can also use the default prefix ``a''.
-% Note that for symbols and numbers you have to check for the strings
-% ``Symbols'' and ``Numbers''.
+% The standard subgroups described in Section~\ref{sec:grouping} is
+% just one of the possible ways to separate your index.  You can do
+% much more if you play with the \cs{nomgroup} command.  Note that all
+% entries sharing the first letter of prefix as grouped together and
+% preceded by the \cs{nomgroup}\oarg{Uppercased first leter} command.
+% So, for example, if you want to separate constants and variables,
+% you may use prefixes |c...| for constants and |v...| for variables,
+% and then write down (package \package{ifthen} being loaded by
+% \package{nomencl})
+% \begin{verbatim} 
+% \renewcommand{\nomgroup}[1]{%
+% \ifthenelse{\equal{#1}{R}}{\item[\textbf{Variables}]}{%
+% \ifthenelse{\equal{#1}{G}}{\item[\textbf{Constants}]}{}}}
+% \end{verbatim}
 %
 %
 % \subsection{Units}
@@ -893,12 +954,14 @@ follows easily.
 \NeedsTeXFormat{LaTeX2e}
 %    \end{macrocode}
 %
-% \changes{v5.1}{2018/12/28}{Moved to xkeyval}
-% We need xkeyval package for some options
+% \changes{v5.0}{2018/12/28}{Moved to xkeyval}
+% \changes{v5.0}{2018/12/28}{Added ifthen package}
+% We need xkeyval package for some options and ifthen for grouping
 %    \begin{macrocode}
 \RequirePackage{xkeyval}
+\RequirePackage{ifthen}
 %    \end{macrocode}
-% 
+%
 %
 % \begin{macro}{\if@printeqref}
 % \begin{macro}{\if@printpageref}
@@ -949,6 +1012,25 @@ follows easily.
 \DeclareOptionX{nocfg}{\@loadcfgfalse}
 %    \end{macrocode}
 % \end{macro}
+%
+% \begin{macro}{\if@stdsubgroups}
+% \changes{v5.0}{2018/12/28}{New macro}
+%   Whether we use standard subgroups
+%    \begin{macrocode}
+\newif\if@stdsubgroups
+\DeclareOptionX{stdsubgroups}{\@stdsubgroupstrue}
+\DeclareOptionX{nostdsubgroups}{\@stdsubgroupsfalse}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\eqdeclaration}
+% \begin{macro}{\pagedeclaration}
+% \begin{macro}{\nomname}
+% \begin{macro}{\nomAname}
+% \begin{macro}{\nomGname}
+% \begin{macro}{\nomXname}
+% \begin{macro}{\nomZname}
 % \changes{v2.5a (1999/03/22)}{1999/03/17}{Added Danish}
 % \changes{v2.6 (1999/04/02)}{1999/03/23}{Added French}
 % \changes{v2.6 (1999/04/02)}{1999/04/01}{Use \cs{nobreakspace} instead of
@@ -959,63 +1041,120 @@ follows easily.
 % \changes{v4.0 (2005/04/07)}{2005/04/07}{Updated Italian option (thanks to Lapo Mori)}
 % \changes{v3.1 (2000/09/15)}{2000/08/30}{Added Croatian}
 % \changes{v3.1a (2000/12/03)}{2000/12/03}{Added Portuguese}
-% \begin{macro}{\eqdeclaration}
-% \begin{macro}{\pagedeclaration}
-% \begin{macro}{\nomname}
+% \changes{v5.0}{2018/12/28}{Added defaults}
 % If you can help out with translations for some other languages, let me know.
 %    \begin{macrocode}
+\def\eqdeclaration#1{equation\nobreakspace(#1)}%
+\def\pagedeclaration#1{\hspace*{2mm}page\nobreakspace#1}%
+\def\nomname{Nomenclature}%
+\def\nomAname{Latin Letters}%
+\def\nomGname{Greek Letters}%
+\def\nomXname{Superscripts}%
+\def\nomZname{Subscripts}
 \DeclareOptionX{croatian}{%
   \def\eqdeclaration#1{, vidi jednad\v{z}bu\nobreakspace(#1)}%
   \def\pagedeclaration#1{, stranica\nobreakspace#1}%
-  \def\nomname{Popis simbola}}
+  \def\nomname{Popis simbola}%
+  \def\nomAname{Latini\v{c}na slova}%
+  \def\nomGname{Gr\v{c}ka slova}%
+  \def\nomXname{Exponenats}%
+  \def\nomZname{Indeksi}}
 \DeclareOptionX{danish}{%
   \def\eqdeclaration#1{, se ligning\nobreakspace(#1)}%
   \def\pagedeclaration#1{, side\nobreakspace#1}%
-  \def\nomname{Symbolliste}}
+  \def\nomname{Symbolliste}%
+  \def\nomAname{Romerske bogstaver}%
+  \def\nomGname{Gr{\ae}ske bogstaver}%
+  \def\nomXname{(H{\o}jtstillede) indices}%
+  \def\nomZname{Indices}}
 \DeclareOptionX{english}{%
   \def\eqdeclaration#1{, see equation\nobreakspace(#1)}%
   \def\pagedeclaration#1{, page\nobreakspace#1}%
-  \def\nomname{Nomenclature}}
+  \def\nomname{Nomenclature}%
+  \def\nomAname{Latin Letters}%
+  \def\nomGname{Greek Letters}%
+  \def\nomXname{Superscripts}%
+  \def\nomZname{Subscripts}}
 \DeclareOptionX{french}{%
   \def\eqdeclaration#1{, voir \'equation\nobreakspace(#1)}%
   \def\pagedeclaration#1{, page\nobreakspace#1}%
-  \def\nomname{Liste des symboles}}
+  \def\nomname{Liste des symboles}%
+  \def\nomAname{Lettres latines}%
+  \def\nomGname{Lettres grecques}%
+  \def\nomXname{Indices sup{\'e}rieurs}%
+  \def\nomZname{Indices}}
 \DeclareOptionX{german}{%
   \def\eqdeclaration#1{, siehe Gleichung\nobreakspace(#1)}%
   \def\pagedeclaration#1{, Seite\nobreakspace#1}%
-  \def\nomname{Symbolverzeichnis}}
+  \def\nomname{Symbolverzeichnis}%
+   \def\nomAname{Lateinische Buchstaben}%
+   \def\nomGname{Griechische Buchstaben}%
+   \def\nomXname{(hochgestellte) Indizes}%
+   \def\nomZname{Indizes}}
 \DeclareOptionX{italian}{%
-\def\eqdeclaration#1{, vedi equazione\nobreakspace(#1)}%
-\def\pagedeclaration#1{, pagina\nobreakspace#1}%
-\def\nomname{Elenco dei simboli}}
+  \def\eqdeclaration#1{, vedi equazione\nobreakspace(#1)}%
+  \def\pagedeclaration#1{, pagina\nobreakspace#1}%
+  \def\nomname{Elenco dei simboli}%
+   \def\nomAname{Lettere latine}%
+   \def\nomGname{Lettere greche}%
+   \def\nomXname{Apici}%
+   \def\nomZname{Indici}}
 \DeclareOptionX{polish}{%
   \def\eqdeclaration#1{, porownaj rownanie\nobreakspace(#1)}%
   \def\pagedeclaration#1{, strona\nobreakspace#1}%
-  \def\nomname{Lista symboli}}
+  \def\nomname{Lista symboli}%
+   \def\nomAname{Litery {\l}aci\'nskie}%
+   \def\nomGname{Litery greckie}%
+   \def\nomXname{Indeksy g\'orny}%
+   \def\nomZname{Indeksy dolne}}
 \DeclareOptionX{portuguese}{%
   \def\eqdeclaration#1{, veja equa\c{c}\~ao\nobreakspace(#1)}%
   \def\pagedeclaration#1{, p\'agina\nobreakspace#1}%
-  \def\nomname{Nomenclatura}}
+  \def\nomname{Nomenclatura}%
+  \def\nomAname{Letras latinas}%
+  \def\nomGname{Letras gregas}%
+  \def\nomXname{Sobrescritos}%
+  \def\nomZname{Subscritos}}
 \DeclareOptionX{russian}{%
   \def\eqdeclaration#1{, \cyrs\cyrm.\nobreakspace(#1)}%
   \def\pagedeclaration#1{, \cyrs\cyrt\cyrr.\nobreakspace#1}%
   \def\nomname{\CYRS\cyrp\cyri\cyrs\cyro\cyrk%
     \ \cyro\cyrb\cyro\cyrz\cyrn\cyra\cyrch\cyre\cyrn\cyri%
-    \cyrishrt}}
+    \cyrishrt}%
+   \def\nomAname{\CYRL\cyra\cyrt\cyri\cyrn\cyrs\cyrk\cyri\cyre\
+     \cyrb\cyru\cyrk\cyrv\cyrery}% 
+   \def\nomGname{\CYRG\cyrr\cyre\cyrch\cyre\cyrs\cyrk\cyri\cyre\
+     \cyrb\cyru\cyrk\cyrv\cyrery}% 
+   \def\nomXname{\CYRN\cyra\cyrd\cyrs\cyrt\cyrr\cyro\cyrch\cyrn\cyrery\cyre\
+     \cyri\cyrn\cyrd\cyre\cyrk\cyrs\cyrery}% 
+   \def\nomZname{\CYRP\cyro\cyrd\cyrs\cyrt\cyrr\cyro\cyrch\cyrn\cyrery\cyre\
+     \cyri\cyrn\cyrd\cyre\cyrk\cyrs\cyrery}} 
 \DeclareOptionX{spanish}{%
   \def\eqdeclaration#1{, v\'ease la ecuaci\'on\nobreakspace(#1)}%
   \def\pagedeclaration#1{, p\'agina\nobreakspace#1}%
-  \def\nomname{Nomenclatura}}
+  \def\nomname{Nomenclatura}%
+   \def\nomAname{Letras latinas}%
+   \def\nomGname{Letras griegas}%
+   \def\nomXname{Super{\'\i}ndices}%
+   \def\nomZname{Sub{\'\i}ndices}}
 \DeclareOptionX{ukrainian}{%
   \def\eqdeclaration#1{, \cyrd\cyri\cyrv.\nobreakspace(#1)}%
   \def\pagedeclaration#1{, \cyrs\cyrt\cyro\cyrr.\nobreakspace#1}%
   \def\nomname{\CYRP\cyre\cyrr\cyre\cyrl\cyrii\cyrk%
-         \ \cyrp\cyro\cyrz\cyrn\cyra\cyrch\cyre\cyrn\cyrsftsn}}
+    \ \cyrp\cyro\cyrz\cyrn\cyra\cyrch\cyre\cyrn\cyrsftsn}%
+   \def\nomAname{\CYRL\cyra\cyrt\cyri\cyrn\cyrs\cyrsftsn\cyrk\cyrii\
+     \cyrl\cyrii\cyrt\cyre\cyrr\cyri}% 
+   \def\nomGname{\CYRG\cyrr\cyre\cyrc\cyrsftsn\cyrk\cyrii\
+     \cyrl\cyrii\cyrt\cyre\cyrr\cyri}% 
+   \def\nomXname{\CYRV\cyre\cyrr\cyrh\cyrn\cyrii\
+     \cyrii\cyrn\cyrd\cyre\cyrk\cyrs\cyri}% 
+   \def\nomZname{\CYRII\cyrn\cyrd\cyre\cyrk\cyrs\cyri}}
 %    \end{macrocode}
 % \end{macro}\end{macro}\end{macro}
+% \end{macro}\end{macro}\end{macro}\end{macro}
 % Finally set the default options and process everything.
 %    \begin{macrocode}
-\ExecuteOptionsX{noncompatible,notintoc,norefeq,norefpage,prefix,cfg,english}
+\ExecuteOptionsX{noncompatible,notintoc,norefeq,norefpage,prefix,cfg,english,nostdsubgroups}
 \ProcessOptionsX\relax
 %    \end{macrocode}
 % \begin{macro}{\@outputfileextension}
@@ -1120,7 +1259,20 @@ follows easily.
 % the user can redefine it to add white space or some fancy divider
 % including the starting character of the new group.
 %    \begin{macrocode}
-\def\nomgroup#1{}
+\if@stdsubgroups
+  \def\nomgroup#1{%
+    \ifthenelse{\equal{#1}{A}}{%
+      \item[\large{\nomAname}]}{%
+      \ifthenelse{\equal{#1}{G}}{%
+        \item[\large{\nomGname}]}{%
+        \ifthenelse{\equal{#1}{X}}{%
+          \item[\large{\nomXname}]}{%
+          \ifthenelse{\equal{#1}{Z}}{%
+            \item[\large{\nomZname}]}{%
+            {}}}}}}
+\else
+  \def\nomgroup#1{}
+\fi
 %    \end{macrocode}
 % \end{macro}
 % \begin{macro}{\nomlabelwidth}
@@ -1307,30 +1459,6 @@ headings_flag  1
 % The code for the examples.  Example~1 is used in the user manual.
 % We need an empty config file for it.
 %    \begin{macrocode}
-%<*sample01.cfg>
-%
-% This file is intentinally empty
-%
-%</sample01.cfg>
-%<*sample02.tex>
-\documentclass{article}
-\usepackage[cfg=sample02.cfg]{nomencl}
-\makenomenclature
-\begin{document}
-\section*{Main equations}
-\begin{equation}
-  a=\frac{N}{A}
-\end{equation}%
-\nomenclature[rx]{$a$}{The number of angels per unit area}%
-\nomenclature[rx]{$N$}{The number of angels per needle point}%
-\nomenclature[rx]{$A$}{The area of the needle point}%
-The equation $\sigma = m a$%
-\nomenclature[ga]{$\sigma$}{The total mass of angels per unit area}%
-\nomenclature[rx]{$m$}{The mass of one angel}
-follows easily.
-\printnomenclature
-\end{document}
-%</sample02.tex>
 %<*sample03.tex>
 \documentclass{article}
 \usepackage[cfg=sample03.cfg]{nomencl}

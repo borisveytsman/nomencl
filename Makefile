@@ -3,7 +3,8 @@ PACKAGE=nomencl
 
 SAMPLES = sample01.tex sample02.tex sample03.tex sample04.tex sample05.tex
 
-CFG = ${SAMPLES:%.tex=%.cfg}
+CFG = sample03.cfg sample04.cfg sample05.cfg
+
 
 SAMPLEPDF = ${SAMPLES:%.tex=%.pdf}
 
@@ -33,8 +34,7 @@ sample%.cfg: nomencl.ins nomencl.dtx
 	do pdflatex $<; done
 
 
-sample%.pdf:  sample%.cfg sample%.tex
-	$(RM) sample$*.nls sample$*.nlo
+sample%.pdf: sample%.tex ${CFG}
 	pdflatex sample$*.tex
 	makeindex sample$*.nlo -s nomencl.ist -o sample$*.nls
 	pdflatex sample$*.tex
