@@ -1,6 +1,6 @@
 % \iffalse
 % File nomencl.dtx
-% Copyright 1996-2018 Boris Veytsman, Bernd Shandl, Lee Netherton, CV
+% Copyright 1996-2019 Boris Veytsman, Bernd Shandl, Lee Netherton, CV
 % Radhakrishnan, Brian Elmegaard
 % 
 %
@@ -28,7 +28,7 @@
 %<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2018/12/29 v5.0 Nomenclature package]
+          [2019/01/08 v5.1 Nomenclature package]
 %
 % \iffalse
 %</package|driver>
@@ -152,7 +152,7 @@
 % keep the compatibility with the older \package{nomencl} and
 % \package{nomentbl}.
 %
-% \subsection{Important Notes for Users of Previous Versions}
+% \subsection{Important notes}
 %
 % An update to the \package{nomencl} package has included some major
 % changes to some of the commands. In particular, the |\makeglossary|
@@ -169,6 +169,20 @@
 % |\|\ldots|glossary| commands to the new |\|\ldots|nomenclature|
 % commands in your \LaTeX\ files. For more information
 % on the compatibility mode see section \ref{sec:compatibility}.
+%
+% A note for the users of \textsl{KOMA-script} bundle.
+% \textsl{KOMA-script} uses its own code for handling options, which
+% is not compatible with \textsl{xkeyval}, which is called by
+% \textsl{nomencl} starting v5.0.  You still can use \textsl{nomencl},
+% but you must load it \emph{after} processing KOMA options, for
+% example,
+% \begin{verbatim}
+% \KOMAoption{parskip=half*}
+%
+% \usepackage{nomencl}
+%
+% \end{verbatim}
+% 
 %
 % \section{Usage}
 %
