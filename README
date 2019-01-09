@@ -26,8 +26,6 @@ else.
 
 VERSION HISTORY
 
-  v5.1 2019/01/08   Documented usage with KOMA-script
-
   v5.0 2018/12/29   New maintainer:  Boris Veytsman
        		    Cleaned code and documentation
 		    Incorporated nomentbl code
