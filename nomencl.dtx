@@ -983,7 +983,9 @@ follows easily.
 % it is highly recommended to update your \LaTeX\ files to use the new
 % nomenclature commands.
 %
-%
+% The package tries to play nice with other packages.  For example, if
+% you load \textsl{tocbasic} package from the KOMA-script bundle,
+% \textsl{nomencl} redefines its internals to be more compatible.
 %
 %
 % \subsection{Acknowledgements}
@@ -1059,10 +1061,13 @@ follows easily.
 %
 % \changes{v5.0}{2018/12/28}{Moved to xkeyval}
 % \changes{v5.0}{2018/12/28}{Added ifthen package}
-% We need xkeyval package for some options and ifthen for grouping
+% \changes{v5.1}{2019/01/27}{Added etoolbox}
+% We need \textsl{xkeyval} package for some options, \textsl{ifthen}
+% for grouping and \textsl{etoolbox} to check loaded packages
 %    \begin{macrocode}
 \RequirePackage{xkeyval}
 \RequirePackage{ifthen}
+\RequirePackage{etoolbox}
 %    \end{macrocode}
 %
 %
@@ -1280,7 +1285,17 @@ follows easily.
 \RequirePackage{array,longtable, siunitx}
 \fi
 %    \end{macrocode}
-% 
+%
+%
+% \begin{macro}{\if@nomencl@tocbasic}
+% \changes{v5.1}{1999/05/11}{Added macro}
+%   Whether \textsl{tocbasic} package is loaded
+%    \begin{macrocode}
+\newif\if@nomencl@tocbasic
+\@nomencl@tocbasicfalse
+%    \end{macrocode}
+%   
+% \end{macro}
 %
 % \begin{macro}{\@outputfileextension}
 % \begin{macro}{\@inputfileextension}
@@ -1501,7 +1516,9 @@ follows easily.
 %
 %
 % \begin{environment}{thenomenclature}
-%\changes{v5.1}{2019/01/27}{Changed \cs{markboth} to \cs{@mkboth} for chapters}
+%\changes{v5.1}{2019/01/27}{Changed \cs{markboth} to \cs{@mkboth} for
+% chapters}
+%\changes{v5.1}{2019/01/27}{Added compatibility with tocbasic}
 % The |thenomenclature| environment formats its title and optionally
 % inserts an item in the TOC, both are dependant on
 % whether the \cs{chapter} command is available or not. After
@@ -1514,6 +1531,12 @@ follows easily.
 % end of the table.
 %    \begin{macrocode}
 \def\thenomenclature{%
+  \if@nomencl@tocbasic
+    \providecommand*{\listofnlsname}{\nomname}%
+    \let\list@fname\listofnlsname
+    \def\@currext{nls}%
+    \tocbasic@listhead{\list@fname}%
+  \else
   \@ifundefined{chapter}%
   {
     \section*{\nomname}
@@ -1524,7 +1547,7 @@ follows easily.
     \@mkboth{\nomname}{\nomname}%
     \if@intoc\addcontentsline{toc}{chapter}{\nomname}\fi%
   }%
-
+  \fi
   \nompreamble
   \if@nomentbl
     \let\itemOrig=\item
@@ -1592,6 +1615,24 @@ follows easily.
     \PackageInfo{nomencl}{Using the configuration file \@cfgfile}}{}
 \fi
 %    \end{macrocode}
+%
+% Check whether \textsl{tocbasic} is loaded
+%    \begin{macrocode}
+\AtEndPreamble{%
+  \@ifpackageloaded{tocbasic}{%
+    \global\@nomencl@tocbasictrue
+    \addtotoclist[nomencl]{nlo}%
+    \addtotoclist[nomencl]{nls}%
+    \if@intoc
+    \setuptoc{nls}{totoc}%
+    \fi
+  }{%
+    \global\@nomencl@tocbasicfalse
+  }%
+}
+%    \end{macrocode}
+% 
+%
 % The end.
 %    \begin{macrocode}
 %</package>
