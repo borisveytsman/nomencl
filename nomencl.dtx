@@ -1,6 +1,6 @@
 % \iffalse
 % File nomencl.dtx
-% Copyright 1996-2018 Boris Veytsman, Bernd Shandl, Lee Netherton, CV
+% Copyright 1996-2019 Boris Veytsman, Bernd Shandl, Lee Netherton, CV
 % Radhakrishnan, Brian Elmegaard
 % 
 %
@@ -28,7 +28,7 @@
 %<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2018/12/29 v5.0 Nomenclature package]
+          [2019/01/27 v5.1 Nomenclature package]
 %
 % \iffalse
 %</package|driver>
@@ -1501,6 +1501,7 @@ follows easily.
 %
 %
 % \begin{environment}{thenomenclature}
+%\changes{v5.1}{2019/01/27}{Changed \cs{markboth} to \cs{@mkboth} for chapters}
 % The |thenomenclature| environment formats its title and optionally
 % inserts an item in the TOC, both are dependant on
 % whether the \cs{chapter} command is available or not. After
@@ -1520,7 +1521,7 @@ follows easily.
   }%
   {
     \chapter*{\nomname}
-    \markboth{\nomname}{\nomname}%
+    \@mkboth{\nomname}{\nomname}%
     \if@intoc\addcontentsline{toc}{chapter}{\nomname}\fi%
   }%
 

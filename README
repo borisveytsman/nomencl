@@ -32,3 +32,4 @@ VERSION HISTORY
 		    New options:  stdsubgroups, nomentbl,
 		    	user selectable configuratuon file
 
+ v5.1 2019/01/27    Compatibility changes for KOMA-Script
