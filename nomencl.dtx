@@ -256,13 +256,14 @@
 \begin{equation}
   a=\frac{N}{A}
 \end{equation}%
-\nomenclature{$a$}{The number of angels per unit area}%
-\nomenclature{$N$}{The number of angels per needle point}%
+\nomenclature{$a$}{The number of angels per unit area\nomrefeq}%
+\nomenclature{$N$}{The number of angels per needle point\nomrefpage}%
 \nomenclature{$A$}{The area of the needle point}%
 The equation $\sigma = m a$%
-\nomenclature{$\sigma$}{The total mass of angels per unit area}%
+\nomenclature{$\sigma$}{The total mass of angels per unit area\nomrefeqpage}%
 \nomenclature{$m$}{The mass of one angel}
 follows easily.
+\eqdeclaration{32}
 \printnomenclature
 \end{document}
 %</sample01.tex>
@@ -1161,82 +1162,76 @@ follows easily.
 % \changes{v3.1 (2000/09/15)}{2000/08/30}{Added Croatian}
 % \changes{v3.1a (2000/12/03)}{2000/12/03}{Added Portuguese}
 % \changes{v5.0}{2018/12/28}{Added defaults}
+% \changes{v5.1}{2019/02/08}{Changed \# to \#\# in options.}
 % If you can help out with translations for some other languages, let me know.
 %    \begin{macrocode}
-\def\eqdeclaration#1{equation\nobreakspace(#1)}%
-\def\pagedeclaration#1{\hspace*{2mm}page\nobreakspace#1}%
-\def\nomname{Nomenclature}%
-\def\nomAname{Latin Letters}%
-\def\nomGname{Greek Letters}%
-\def\nomXname{Superscripts}%
-\def\nomZname{Subscripts}
 \DeclareOptionX{croatian}{%
-  \def\eqdeclaration#1{, vidi jednad\v{z}bu\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, stranica\nobreakspace#1}%
+  \def\eqdeclaration##1{, vidi jednad\v{z}bu\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, stranica\nobreakspace##1}%
   \def\nomname{Popis simbola}%
   \def\nomAname{Latini\v{c}na slova}%
   \def\nomGname{Gr\v{c}ka slova}%
   \def\nomXname{Exponenats}%
   \def\nomZname{Indeksi}}
 \DeclareOptionX{danish}{%
-  \def\eqdeclaration#1{, se ligning\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, side\nobreakspace#1}%
+  \def\eqdeclaration##1{, se ligning\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, side\nobreakspace##1}%
   \def\nomname{Symbolliste}%
   \def\nomAname{Romerske bogstaver}%
   \def\nomGname{Gr{\ae}ske bogstaver}%
   \def\nomXname{(H{\o}jtstillede) indices}%
   \def\nomZname{Indices}}
 \DeclareOptionX{english}{%
-  \def\eqdeclaration#1{, see equation\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, page\nobreakspace#1}%
+  \def\eqdeclaration##1{, see equation\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, page\nobreakspace##1}%
   \def\nomname{Nomenclature}%
   \def\nomAname{Latin Letters}%
   \def\nomGname{Greek Letters}%
   \def\nomXname{Superscripts}%
   \def\nomZname{Subscripts}}
 \DeclareOptionX{french}{%
-  \def\eqdeclaration#1{, voir \'equation\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, page\nobreakspace#1}%
+  \def\eqdeclaration##1{, voir \'equation\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, page\nobreakspace##1}%
   \def\nomname{Liste des symboles}%
   \def\nomAname{Lettres latines}%
   \def\nomGname{Lettres grecques}%
   \def\nomXname{Indices sup{\'e}rieurs}%
   \def\nomZname{Indices}}
 \DeclareOptionX{german}{%
-  \def\eqdeclaration#1{, siehe Gleichung\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, Seite\nobreakspace#1}%
+  \def\eqdeclaration##1{, siehe Gleichung\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, Seite\nobreakspace##1}%
   \def\nomname{Symbolverzeichnis}%
    \def\nomAname{Lateinische Buchstaben}%
    \def\nomGname{Griechische Buchstaben}%
    \def\nomXname{(hochgestellte) Indizes}%
    \def\nomZname{Indizes}}
 \DeclareOptionX{italian}{%
-  \def\eqdeclaration#1{, vedi equazione\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, pagina\nobreakspace#1}%
+  \def\eqdeclaration##1{, vedi equazione\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, pagina\nobreakspace##1}%
   \def\nomname{Elenco dei simboli}%
    \def\nomAname{Lettere latine}%
    \def\nomGname{Lettere greche}%
    \def\nomXname{Apici}%
    \def\nomZname{Indici}}
 \DeclareOptionX{polish}{%
-  \def\eqdeclaration#1{, porownaj rownanie\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, strona\nobreakspace#1}%
+  \def\eqdeclaration##1{, porownaj rownanie\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, strona\nobreakspace##1}%
   \def\nomname{Lista symboli}%
    \def\nomAname{Litery {\l}aci\'nskie}%
    \def\nomGname{Litery greckie}%
    \def\nomXname{Indeksy g\'orny}%
    \def\nomZname{Indeksy dolne}}
 \DeclareOptionX{portuguese}{%
-  \def\eqdeclaration#1{, veja equa\c{c}\~ao\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, p\'agina\nobreakspace#1}%
+  \def\eqdeclaration##1{, veja equa\c{c}\~ao\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, p\'agina\nobreakspace##1}%
   \def\nomname{Nomenclatura}%
   \def\nomAname{Letras latinas}%
   \def\nomGname{Letras gregas}%
   \def\nomXname{Sobrescritos}%
   \def\nomZname{Subscritos}}
 \DeclareOptionX{russian}{%
-  \def\eqdeclaration#1{, \cyrs\cyrm.\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, \cyrs\cyrt\cyrr.\nobreakspace#1}%
+  \def\eqdeclaration##1{, \cyrs\cyrm.\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, \cyrs\cyrt\cyrr.\nobreakspace##1}%
   \def\nomname{\CYRS\cyrp\cyri\cyrs\cyro\cyrk%
     \ \cyro\cyrb\cyro\cyrz\cyrn\cyra\cyrch\cyre\cyrn\cyri%
     \cyrishrt}%
@@ -1249,16 +1244,16 @@ follows easily.
    \def\nomZname{\CYRP\cyro\cyrd\cyrs\cyrt\cyrr\cyro\cyrch\cyrn\cyrery\cyre\
      \cyri\cyrn\cyrd\cyre\cyrk\cyrs\cyrery}} 
 \DeclareOptionX{spanish}{%
-  \def\eqdeclaration#1{, v\'ease la ecuaci\'on\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, p\'agina\nobreakspace#1}%
+  \def\eqdeclaration##1{, v\'ease la ecuaci\'on\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, p\'agina\nobreakspace##1}%
   \def\nomname{Nomenclatura}%
    \def\nomAname{Letras latinas}%
    \def\nomGname{Letras griegas}%
    \def\nomXname{Super{\'\i}ndices}%
    \def\nomZname{Sub{\'\i}ndices}}
 \DeclareOptionX{ukrainian}{%
-  \def\eqdeclaration#1{, \cyrd\cyri\cyrv.\nobreakspace(#1)}%
-  \def\pagedeclaration#1{, \cyrs\cyrt\cyro\cyrr.\nobreakspace#1}%
+  \def\eqdeclaration##1{, \cyrd\cyri\cyrv.\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, \cyrs\cyrt\cyro\cyrr.\nobreakspace##1}%
   \def\nomname{\CYRP\cyre\cyrr\cyre\cyrl\cyrii\cyrk%
     \ \cyrp\cyro\cyrz\cyrn\cyra\cyrch\cyre\cyrn\cyrsftsn}%
    \def\nomAname{\CYRL\cyra\cyrt\cyri\cyrn\cyrs\cyrsftsn\cyrk\cyrii\
