@@ -35,3 +35,5 @@ VERSION HISTORY
  v5.1 2019/02/08    Compatibility changes for KOMA-Script
                     Bugs fixes
 
+ v5.2 2019/05/05    More compatibility changes:  tocbasic call
+      		    is now optional

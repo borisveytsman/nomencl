@@ -28,7 +28,7 @@
 %<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2019/02/08 v5.1 Nomenclature package]
+          [2019/05/05 v5.2 Nomenclature package]
 %
 % \iffalse
 %</package|driver>
@@ -94,6 +94,7 @@
 % \changes{v4.1 (2005/04/27)}{2005/04/27}{Improvements to the documentation,
 % including hyperref support}
 % \changes{v5.0}{2018/12/28}{Rewrote documentation}
+% \changes{v5.2}{2019/05/05}{New options: tocbasic, notocbasic}
 %
 % \GetFileInfo{nomencl.dtx}
 %
@@ -333,6 +334,11 @@ follows easily.
 % \item[nocfg] The configuration file is not loaded.
 % \item[intoc] Inserts the nomenclature in the Table of Contents.
 % \item[notintoc] No entry for the nomenclature in the Table of Contents. (default)
+% \item[tocbasic] Use \textsl{tocbasic} package from KOMA script
+% bundle for TOC handling (default)
+% \item[notocbasic] Do not use \textsl{tocbasic} package from KOMA
+% script.  You may need this option if \textsl{tocbasic} conflicts
+% with other packages like \textsl{pgfopts}.  
 % \item[compatible] Run in compatibility mode. Older tex files may
 %   need this option selected to be able to compile. In the latest
 %   version of \package{nomencl} the commands |\makeglossary| and
@@ -1059,9 +1065,6 @@ follows easily.
 %    \begin{macrocode}
 \RequirePackage{xkeyval}
 \RequirePackage{ifthen}
-\RequirePackage{tocbasic}
-\addtotoclist[nomencl]{nlo}
-\addtotoclist[nomencl]{nls}
 %    \end{macrocode}
 %
 %
@@ -1086,6 +1089,17 @@ follows easily.
 \newif\if@compatibilitymode
 %    \end{macrocode}
 % \end{macro}
+%
+% \begin{macro}{\if@nomencl@tocbasic}
+% \changes{v5.2}{2019/05/05}{Reintroduced macro}
+% Whether we are to use tocbasic
+%    \begin{macrocode}
+\newif\if@nomencl@tocbasic
+\@nomencl@tocbasictrue
+%    \end{macrocode}
+% 
+% \end{macro}
+%
 % And the options to set these switches globally.
 %    \begin{macrocode}
 \DeclareOptionX{refeq}{\@printeqreftrue}
@@ -1096,6 +1110,8 @@ follows easily.
 \DeclareOptionX{notintoc}{\@intocfalse}
 \DeclareOptionX{compatible}{\@compatibilitymodetrue}
 \DeclareOptionX{noncompatible}{\@compatibilitymodefalse}
+\DeclareOptionX{tocbasic}{\@nomencl@tocbasictrue}
+\DeclareOptionX{notocbasic}{\@nomencl@tocbasicfalse}
 %    \end{macrocode}
 % \begin{macro}{\nomprefix}
 % It might make sense to add the prefix ``a'' to every sortkey, see
@@ -1137,7 +1153,6 @@ follows easily.
 \DeclareOptionX{nostdsubgroups}{\@stdsubgroupsfalse}
 %    \end{macrocode}
 % \end{macro}
-%
 %
 % \begin{macro}{\eqdeclaration}
 % \begin{macro}{\pagedeclaration}
@@ -1263,7 +1278,7 @@ follows easily.
 % \end{macro}\end{macro}\end{macro}\end{macro}
 % Finally set the default options and process everything.
 %    \begin{macrocode}
-\ExecuteOptionsX{noncompatible,notintoc,norefeq,norefpage,prefix,cfg,english,nostdsubgroups}
+\ExecuteOptionsX{noncompatible,notintoc,norefeq,norefpage,prefix,cfg,english,nostdsubgroups,tocbasic}
 \ProcessOptionsX\relax
 %    \end{macrocode}
 %
@@ -1274,10 +1289,22 @@ follows easily.
 \fi
 %    \end{macrocode}
 %
+% In |tocbasic| mode we need to load \textsl{tocbasic}
+%    \begin{macrocode}
+\if@nomencl@tocbasic
+  \RequirePackage{tocbasic}
+  \addtotoclist[nomencl]{nlo}
+  \addtotoclist[nomencl]{nls}
+\fi
+%    \end{macrocode}
+% 
+%
 % Checking whether we need nomenclature in toc
 %    \begin{macrocode}
 \if@intoc
-\setuptoc{nls}{totoc}
+  \if@nomencl@tocbasic
+    \setuptoc{nls}{totoc}
+  \fi
 \fi
 %    \end{macrocode}
 % 
@@ -1503,7 +1530,8 @@ follows easily.
 % \begin{environment}{thenomenclature}
 %\changes{v5.1}{2019/01/27}{Changed \cs{markboth} to \cs{@mkboth} for
 % chapters}
-%\changes{v5.1}{2019/02/08}{Added tocbasic}
+% \changes{v5.1}{2019/02/08}{Added tocbasic}
+% \changes{v5.2}{2019/05/05}{Made tocbasic optional}
 % The |thenomenclature| environment formats its title and optionally
 % inserts an item in the TOC, both are dependant on
 % whether the \cs{chapter} command is available or not. After
@@ -1517,9 +1545,22 @@ follows easily.
 %    \begin{macrocode}
 \def\thenomenclature{%
   \providecommand*{\listofnlsname}{\nomname}%
-  \let\list@fname\listofnlsname
-  \def\@currext{nls}%
-  \tocbasic@listhead{\list@fname}%
+  \if@nomencl@tocbasic
+    \let\list@fname\listofnlsname
+    \def\@currext{nls}%
+    \tocbasic@listhead{\list@fname}%
+   \else
+    \@ifundefined{chapter}%
+    {
+      \section*{\nomname}
+      \if@intoc\addcontentsline{toc}{section}{\nomname}\fi%
+    }%
+    {
+      \chapter*{\nomname}
+      \@mkboth{\nomname}{\nomname}%
+      \if@intoc\addcontentsline{toc}{chapter}{\nomname}\fi%
+    }%
+  \fi
   \nompreamble
   \if@nomentbl
     \let\itemOrig=\item
