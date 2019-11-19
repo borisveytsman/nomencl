@@ -353,7 +353,7 @@ follows easily.
 % Section~\ref{sec:nomentbl} (default).
 % \item[\hspace{-\labelsep}]
 %   \textbf{croatian, danish, english, french, german, italian, polish,
-%     portuguese, russian, spanish, ukrainian}
+%     portuguese, russian, slovene, spanish, ukrainian}
 %   The reference texts and the nomenclature title will appear in the
 %   corresponding language. Note that in order to use Russian or Ukrainian,
 %   you have to have Cyrillic fonts installed and you might need a replacement
@@ -1253,6 +1253,14 @@ follows easily.
      \cyri\cyrn\cyrd\cyre\cyrk\cyrs\cyrery}% 
    \def\nomZname{\CYRP\cyro\cyrd\cyrs\cyrt\cyrr\cyro\cyrch\cyrn\cyrery\cyre\
      \cyri\cyrn\cyrd\cyre\cyrk\cyrs\cyrery}} 
+\DeclareOptionX{slovene}{%
+  \def\eqdeclaration##1{, glej ena\v{c}bo\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, stran\nobreakspace##1}%
+  \def\nomname{Seznam simbolov}%
+  \def\nomAname{Latinske \v{c}rke}%
+  \def\nomGname{Gr\v{s}ke \v{c}rke}%
+  \def\nomXname{Eksponenti}%
+  \def\nomZname{Indeksi}}
 \DeclareOptionX{spanish}{%
   \def\eqdeclaration##1{, v\'ease la ecuaci\'on\nobreakspace(##1)}%
   \def\pagedeclaration##1{, p\'agina\nobreakspace##1}%
