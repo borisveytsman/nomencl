@@ -10,7 +10,7 @@ nomenclature using MakeIndex.
 
 COPYING AND MODIFICATION
 
-Copyright 1996-2018 Boris Veytsman, Bernd Shandl, Lee Netherton, CV
+Copyright 1996-2020 Boris Veytsman, Bernd Shandl, Lee Netherton, CV
 Radhakrishnan, Brian Elmegaard
 
 
@@ -40,4 +40,6 @@ VERSION HISTORY
 
  v5.3 2019/11/23    Documentation updates
       		    Slovene option
- 
+
+ v5.4 2020/03/01    Norwegian (norwegian-bokmaal, norwegian-nynorsk)
+      		    options
