@@ -352,7 +352,8 @@ follows easily.
 % \item[nonomentbl] Do not print nomenclature in the |nomentbl| style, see
 % Section~\ref{sec:nomentbl} (default).
 % \item[\hspace{-\labelsep}]
-%   \textbf{croatian, danish, english, french, german, italian, polish,
+%   \textbf{croatian, danish, english, french, german, italian,
+%     norwegian-bokmaal, norwegian-nynorsk, polish,
 %     portuguese, russian, slovene, spanish, ukrainian}
 %   The reference texts and the nomenclature title will appear in the
 %   corresponding language. Note that in order to use Russian or Ukrainian,
@@ -1225,6 +1226,22 @@ follows easily.
    \def\nomGname{Lettere greche}%
    \def\nomXname{Apici}%
    \def\nomZname{Indici}}
+\DeclareOptionX{norwegian-bokmaal}{%
+  \def\eqdeclaration##1{, se ligning\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, side\nobreakspace##1}%
+  \def\nomname{Nomenklatur}%
+  \def\nomAname{Romerske bokstaver}%
+  \def\nomGname{Greske bokstaver}%
+  \def\nomXname{Hevet skrift}%
+  \def\nomZname{Senket skrift}}
+\DeclareOptionX{norwegian-nynorsk}{%
+  \def\eqdeclaration##1{, se likning\nobreakspace(##1)}%
+  \def\pagedeclaration##1{, side\nobreakspace##1}%
+  \def\nomname{Nomenklatur}%
+  \def\nomAname{Romarske bokstavar}%
+  \def\nomGname{Greske bokstavar}%
+  \def\nomXname{Hevd skrift}%
+  \def\nomZname{Senka skrift}}
 \DeclareOptionX{polish}{%
   \def\eqdeclaration##1{, porownaj rownanie\nobreakspace(##1)}%
   \def\pagedeclaration##1{, strona\nobreakspace##1}%
