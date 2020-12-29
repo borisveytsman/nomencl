@@ -28,7 +28,7 @@
 %<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2020/03/01 v5.4 Nomenclature package]
+          [2020/12/29 v5.5 Nomenclature package]
 %
 % \iffalse
 %</package|driver>
@@ -352,7 +352,7 @@ follows easily.
 % \item[nonomentbl] Do not print nomenclature in the |nomentbl| style, see
 % Section~\ref{sec:nomentbl} (default).
 % \item[\hspace{-\labelsep}]
-%   \textbf{croatian, danish, english, french, german, italian,
+%   \textbf{catalan, croatian, danish, english, french, german, italian,
 %     norwegian-bokmaal, norwegian-nynorsk, polish,
 %     portuguese, russian, slovene, spanish, ukrainian}
 %   The reference texts and the nomenclature title will appear in the
@@ -996,11 +996,12 @@ follows easily.
 % The authors  want to thank Stefan
 % B\"ohm and Karl Heinz Marbaise who helped testing this package.
 %
-% The translations were done by Branka Lon\v{c}arevi\'{c} (Croatian),
-% Brian Elmegaard (Danish), Denis B.~Roegel (French), Sani Egisto
-% (Italian), Artur Gorka (Polish), Pedro Areal (Portuguese), Alejandro
-% Lopez-Valencia (Spanish), joder (Slovene),
-% and Boris Veytsman (Russian and Ukrainian).
+% The translations were done by Joan Queralt (Catalan), Branka
+% Lon\v{c}arevi\'{c} (Croatian), Brian Elmegaard (Danish), Denis
+% B.~Roegel (French), Sani Egisto (Italian), wishfort36 (Norwegian),
+% Artur Gorka (Polish), Pedro Areal (Portuguese), joder (Slovene),
+% Alejandro Lopez-Valencia (Spanish), and Boris Veytsman (Russian and
+% Ukrainian).
 %
 %
 % \subsection{Releases and Legal Issues}
@@ -1177,8 +1178,17 @@ follows easily.
 % \changes{v5.1}{2019/02/08}{Changed \# to \#\# in options.}
 % \changes{v5.3}{2019/11/23}{Added Slovene (joder)}
 % \changes{v5.4}{2020/03/01}{Added Norwegian (wishfort36)}
+% \changes{v5.4}{2020/12/29}{Added Catalan (Joan Queralt)}
 % If you can help out with translations for some other languages, let me know.
 %    \begin{macrocode}
+\DeclareOptionX{catalan}{%
+\def\eqdeclaration##1{, vegeu l'equaci\’o\nobreakspace(##1)}%
+\def\pagedeclaration##1{, p\`agina\nobreakspace##1}
+\def\nomname{Nomenclatura}
+\def\nomAname{Lletres llatines}%
+\def\nomGname{Lletres gregues}
+\def\nomXname{Super{\’\i}ndexs}%
+\def\nomZname{Sub{\’\i}ndexs}}
 \DeclareOptionX{croatian}{%
   \def\eqdeclaration##1{, vidi jednad\v{z}bu\nobreakspace(##1)}%
   \def\pagedeclaration##1{, stranica\nobreakspace##1}%
