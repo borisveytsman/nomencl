@@ -46,3 +46,6 @@ VERSION HISTORY
 
  v5.5 2020/12/29    Catalan option
 
+ v5.6 2021/11/10    Nomentbl no longer uses the s column for units and
+      		    thus works with the new versions of siunitx
+		    package.

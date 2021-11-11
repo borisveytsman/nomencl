@@ -1,6 +1,6 @@
 % \iffalse
 % File nomencl.dtx
-% Copyright 1996-2020 Boris Veytsman, Bernd Shandl, Lee Netherton, CV
+% Copyright 1996-2021 Boris Veytsman, Bernd Shandl, Lee Netherton, CV
 % Radhakrishnan, Brian Elmegaard
 % 
 %
@@ -28,7 +28,7 @@
 %<*package|driver>
 % \fi
 %         \ProvidesFile{nomencl.dtx}%
-          [2020/12/29 v5.5 Nomenclature package]
+          [2021/11/10 v5.6 Nomenclature package]
 %
 % \iffalse
 %</package|driver>
@@ -579,7 +579,7 @@ or another one
 % \DescribeMacro{\setnomtableformat}
 % The list is wrapped in a |longtable| with the default format
 % \begin{center}
-% |lp{0.4\textwidth}sp{0.3\textwidth}@{}l|  
+% |lp{0.4\textwidth}cp{0.3\textwidth}@{}l|  
 % \end{center}
 % The command
 % \cs{setnomtableformat}\marg{format} can be used to change it, for
@@ -590,8 +590,7 @@ or another one
 %
 % Note that the table has five columns: symbol, description, units,
 % note, and reference.  If you do not use references, you may suppress
-% the last column using |@{}l| declaration.  The |s| column is used
-% for units in the \package{siunitx} format.
+% the last column using |@{}l| declaration.  
 %
 % Figure~\ref{fig:nomentbl} provides an example of this option.
 %
@@ -1429,6 +1428,8 @@ follows easily.
 % \begin{macro}{\@@@nomenclature}
 % \changes{v2.7 (1999/05/14)}{1999/05/11}{More robust by using \cs{nom@verb}}
 % \changes{v5.0}{2018/12/28}{Nomentbl option}
+% \changes{v5.6}{2021/11/10}{Nomentbl option now does not use the
+% deprecated |s| columnstyle}
 % If \cs{makenomenclature} was already executed, then \cs{@nomenclature}
 % calls the macro \cs{@@@nomenclature} which writes to the nomenclature file.
 % It puts the prefix in front of the entry, adds brackets |[]| around the
@@ -1446,7 +1447,7 @@ follows easily.
     \def\@tempa{#2}\def\@tempb{#3}%
     \protected@write\@nomenclaturefile{}%
     {\string\nomenclatureentry{#1\nom@verb\@tempa @&{\nom@verb\@tempa}&%
-        \begingroup\nom@verb\@tempb\endgroup &\begingroup#4\endgroup&%
+        \begingroup\nom@verb\@tempb\endgroup &\unit{#4}&%
         \begingroup#5\endgroup&\begingroup\protect\nomeqref{\theequation}%
         |nompageref}{\thepage}}%
     \endgroup
@@ -1553,13 +1554,14 @@ follows easily.
 % \end{macro}
 %
 % \begin{macro}{\setnomtableformat}
-%\changes{v5.0}{2018/12/28}{Added macro}
+%   \changes{v5.0}{2018/12/28}{Added macro}
+%   \changes{v5.6}{2021/11/10}{Switched to |c| column for units}
 % The format of the nomenclature table.  We insert an empty left
 % column due to the way \TeX\ sees \cs{multicolumn} in \cs{nomgroup}
 % command.  
 %    \begin{macrocode}
 \def\setnomtableformat#1{\def\@nomtableformat{l@{}#1}}
-\setnomtableformat{lp{0.45\textwidth}sp{0.3\textwidth}@{}l}
+\setnomtableformat{lp{0.45\textwidth}cp{0.3\textwidth}@{}l}
 %    \end{macrocode}
 % 
 % \end{macro}
